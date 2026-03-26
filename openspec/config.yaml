@@ -1,0 +1,42 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Project: SaaS Business Platform (béisbol → multi-deporte)
+  Stack: NX monorepo, React 19, NestJS, PostgreSQL, Prisma, Zod, Zustand, Capacitor
+  Architecture: Multi-tenant, BFF (API Gateway), microservicios por dominio de negocio
+  Apps: admin-dashboard, customer-app, api-gateway, auth/club/inventory/booking/finance services
+  Testing: Jest (unit + integration), Playwright (E2E), TDD por defecto
+  Style: TypeScript strict, ESLint, Prettier, conventional commits
+
+rules:
+  proposal:
+    - Include rollback plan for every risky change
+    - Identify which NX apps/libs are affected
+    - Specify if change is multi-tenant scoped or global
+  specs:
+    - Use Given/When/Then format for all scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Every requirement needs at least one happy path + one edge case scenario
+  design:
+    - Include sequence diagrams for flows that cross service boundaries
+    - Document architecture decisions with rationale and rejected alternatives
+    - Specify NX lib boundaries affected (apps/ vs libs/)
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing, cleanup)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks completable in one session
+    - Always include a testing phase with spec scenario coverage
+  apply:
+    - Follow Repository Pattern for all NestJS services
+    - Load relevant coding skills before writing code
+    - Controllers delegate only — no business logic
+    - Use Zod for all validation (DTOs via ZodValidationPipe)
+    - No `any` types — use `unknown` and narrow with Zod
+  verify:
+    - Run nx run-many --target=test --all before marking complete
+    - Compare every spec scenario against actual test results
+    - Build must pass with zero TypeScript errors
+  archive:
+    - Warn before merging delta specs with large removals
+    - Verify all tasks are [x] before archiving
