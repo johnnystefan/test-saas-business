@@ -45,6 +45,7 @@
     "jsonc-eslint-parser": "^2.1.0",
     "nx": "22.6.3",
     "prettier": "~3.6.2",
+    "swc-loader": "^0.2.7",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
     "typescript": "6.0.0-beta",

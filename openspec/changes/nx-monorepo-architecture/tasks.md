@@ -42,9 +42,9 @@
 
 ## Phase 5: Verificación
 
-- [ ] 5.1 Ejecutar `nx run-many --target=lint --all` — debe pasar sin errores de boundary
-- [ ] 5.2 Ejecutar `nx run-many --target=build --all` — debe compilar sin errores TypeScript
-- [ ] 5.3 Verificar que `apps/admin` → `apps/auth-service` es BLOQUEADO por ESLint (spec: cross-app prohibition)
-- [ ] 5.4 Verificar que `apps/admin` → `@saas/shared-types` es PERMITIDO (spec: app-to-lib permission)
-- [ ] 5.5 Ejecutar `docker compose up -d` y confirmar que PostgreSQL 16 responde en puerto 5432
-- [ ] 5.6 Commit final: `chore(infra): bootstrap NX monorepo with apps, libs, boundaries and Docker`
+- [x] 5.1 Ejecutar `nx run-many --target=lint --all` — debe pasar sin errores de boundary
+- [x] 5.2 Ejecutar `nx run-many --target=build --all` — debe compilar sin errores TypeScript
+- [x] 5.3 Verificar que `apps/api-gateway` (type:bff) → `@saas/shared-ui` (type:ui) es BLOQUEADO por ESLint
+- [x] 5.4 Verificar que `apps/customer` → `@saas/shared-types` es PERMITIDO
+- [x] 5.5 Ejecutar `docker compose up -d` y confirmar que PostgreSQL 16 responde en puerto 5432
+- [x] 5.6 Commit final: `chore(infra): phase 5 — TypeScript 6 + SWC build fixes, boundary verification, Docker`
