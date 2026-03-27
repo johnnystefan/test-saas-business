@@ -1,0 +1,20 @@
+{
+  "name": "saas-business",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "nx run-many --target=build --all",
+    "test": "nx run-many --target=test --all",
+    "lint": "nx run-many --target=lint --all"
+  },
+  "devDependencies": {
+    "@nx/eslint": "^22.6.3",
+    "@nx/js": "^22.6.3",
+    "@nx/nest": "^22.6.3",
+    "@nx/react": "^22.6.3",
+    "@nx/vite": "^22.6.3",
+    "nx": "22.6.3",
+    "typescript": "6.0.0-beta"
+  },
+  "nx": {}
+}

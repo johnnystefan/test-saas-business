@@ -2,13 +2,13 @@
 
 ## Phase 1: Workspace Foundation
 
-- [ ] 1.1 Crear workspace NX vacío: `pnpm dlx create-nx-workspace@latest saas-business --preset=ts --packageManager=pnpm --nxCloud=skip`
-- [ ] 1.2 Instalar TypeScript 6 beta: `pnpm add -D typescript@beta` en el root
-- [ ] 1.3 Crear `pnpm-workspace.yaml` declarando `apps/*` y `libs/**` como packages
-- [ ] 1.4 Configurar `nx.json`: habilitar caché para `build`, `test`, `lint`; `defaultBase: "main"`
-- [ ] 1.5 Crear `tsconfig.base.json` con target `es2022`, `moduleResolution: bundler`, `types: []`, y todos los `@saas/*` path aliases para las 7 libs
-- [ ] 1.6 Crear `.env.example` con `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `PORT`
-- [ ] 1.7 Crear `docker-compose.yml` con PostgreSQL 16 en puerto 5432 y pgAdmin opcional
+- [x] 1.1 Crear workspace NX vacío: `pnpm dlx create-nx-workspace@latest saas-business --preset=ts --packageManager=pnpm --nxCloud=skip`
+- [x] 1.2 Instalar TypeScript 6 beta: `pnpm add -D typescript@beta` en el root
+- [x] 1.3 Crear `pnpm-workspace.yaml` declarando `apps/*` y `libs/**` como packages
+- [x] 1.4 Configurar `nx.json`: habilitar caché para `build`, `test`, `lint`; `defaultBase: "main"`
+- [x] 1.5 Crear `tsconfig.base.json` con target `es2022`, `moduleResolution: bundler`, `types: []`, y todos los `@saas/*` path aliases para las 7 libs
+- [x] 1.6 Crear `.env.example` con `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `PORT`
+- [x] 1.7 Crear `docker-compose.yml` con PostgreSQL 16 en puerto 5432 y pgAdmin opcional
 
 ## Phase 2: Apps Scaffolding
 

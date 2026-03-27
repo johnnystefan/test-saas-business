@@ -27,3 +27,7 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+.nx/polygraph
+.claude/worktrees
+.claude/settings.local.json
