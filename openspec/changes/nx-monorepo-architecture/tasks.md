@@ -12,15 +12,15 @@
 
 ## Phase 2: Apps Scaffolding
 
-- [ ] 2.1 Generar `apps/admin`: `nx g @nx/react:app admin --directory=apps/admin --bundler=vite --style=css`
-- [ ] 2.2 Generar `apps/customer`: `nx g @nx/react:app customer --directory=apps/customer --bundler=vite --style=css`
-- [ ] 2.3 Generar `apps/api-gateway`: `nx g @nx/nest:app api-gateway --directory=apps/api-gateway`
-- [ ] 2.4 Generar `apps/admin-gateway`: `nx g @nx/nest:app admin-gateway --directory=apps/admin-gateway`
-- [ ] 2.5 Generar `apps/auth-service`: `nx g @nx/nest:app auth-service --directory=apps/auth-service`
-- [ ] 2.6 Generar `apps/club-service`: `nx g @nx/nest:app club-service --directory=apps/club-service`
-- [ ] 2.7 Generar `apps/inventory-service`: `nx g @nx/nest:app inventory-service --directory=apps/inventory-service`
-- [ ] 2.8 Generar `apps/booking-service`: `nx g @nx/nest:app booking-service --directory=apps/booking-service`
-- [ ] 2.9 Generar `apps/finance-service`: `nx g @nx/nest:app finance-service --directory=apps/finance-service`
+- [x] 2.1 Generar `apps/admin`: `nx g @nx/react:app admin --directory=apps/admin --bundler=vite --style=css`
+- [x] 2.2 Generar `apps/customer`: `nx g @nx/react:app customer --directory=apps/customer --bundler=vite --style=css`
+- [x] 2.3 Generar `apps/api-gateway`: `nx g @nx/nest:app --name=api-gateway --directory=apps/api-gateway`
+- [x] 2.4 Generar `apps/admin-gateway`: `nx g @nx/nest:app --name=admin-gateway --directory=apps/admin-gateway`
+- [x] 2.5 Generar `apps/auth-service`: `nx g @nx/nest:app --name=auth-service --directory=apps/auth-service`
+- [x] 2.6 Generar `apps/club-service`: `nx g @nx/nest:app --name=club-service --directory=apps/club-service`
+- [x] 2.7 Generar `apps/inventory-service`: `nx g @nx/nest:app --name=inventory-service --directory=apps/inventory-service`
+- [x] 2.8 Generar `apps/booking-service`: `nx g @nx/nest:app --name=booking-service --directory=apps/booking-service`
+- [x] 2.9 Generar `apps/finance-service`: `nx g @nx/nest:app --name=finance-service --directory=apps/finance-service`
 
 ## Phase 3: Libs Scaffolding
 
