@@ -1,0 +1,29 @@
+# Reference / scratch files — do not commit
+agents-example.md
+idea.md
+my-example.md
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# NX cache
+.nx/cache
+.nx/workspace-data
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
