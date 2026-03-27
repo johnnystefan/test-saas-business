@@ -15,13 +15,20 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "@saas/shared-types":     ["libs/shared/types/src/index.ts"],
-      "@saas/shared-utils":     ["libs/shared/utils/src/index.ts"],
-      "@saas/shared-ui":        ["libs/shared/ui/src/index.ts"],
+      "@saas/shared-types": ["libs/shared/types/src/index.ts"],
+      "@saas/shared-utils": ["libs/shared/utils/src/index.ts"],
+      "@saas/shared-ui": ["libs/shared/ui/src/index.ts"],
       "@saas/shared-constants": ["libs/shared/constants/src/index.ts"],
-      "@saas/auth-utils":       ["libs/auth/utils/src/index.ts"],
-      "@saas/testing-utils":    ["libs/testing/utils/src/index.ts"],
-      "@saas/config-env":       ["libs/config/env/src/index.ts"]
+      "@saas/auth-utils": ["libs/auth/utils/src/index.ts"],
+      "@saas/testing-utils": ["libs/testing/utils/src/index.ts"],
+      "@saas/config-env": ["libs/config/env/src/index.ts"],
+      "shared-types": ["libs/shared/types/src/index.ts"],
+      "shared-utils": ["libs/shared/utils/src/index.ts"],
+      "shared-ui": ["libs/shared/ui/src/index.ts"],
+      "shared-constants": ["libs/shared/constants/src/index.ts"],
+      "auth-utils": ["libs/auth/utils/src/index.ts"],
+      "testing-utils": ["libs/testing/utils/src/index.ts"],
+      "config-env": ["libs/config/env/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "**/node_modules", "dist", "**/dist"]

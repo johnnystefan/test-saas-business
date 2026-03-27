@@ -24,13 +24,13 @@
 
 ## Phase 3: Libs Scaffolding
 
-- [ ] 3.1 Generar `libs/shared/types`: `nx g @nx/js:lib shared-types --directory=libs/shared/types --bundler=tsc`
-- [ ] 3.2 Generar `libs/shared/utils`: `nx g @nx/js:lib shared-utils --directory=libs/shared/utils --bundler=tsc`
-- [ ] 3.3 Generar `libs/shared/ui`: `nx g @nx/react:lib shared-ui --directory=libs/shared/ui --bundler=vite`
-- [ ] 3.4 Generar `libs/shared/constants`: `nx g @nx/js:lib shared-constants --directory=libs/shared/constants --bundler=tsc`
-- [ ] 3.5 Generar `libs/auth/utils`: `nx g @nx/js:lib auth-utils --directory=libs/auth/utils --bundler=tsc`
-- [ ] 3.6 Generar `libs/testing/utils`: `nx g @nx/js:lib testing-utils --directory=libs/testing/utils --bundler=tsc`
-- [ ] 3.7 Generar `libs/config/env`: `nx g @nx/js:lib config-env --directory=libs/config/env --bundler=tsc`
+- [x] 3.1 Generar `libs/shared/types`: `nx g @nx/js:lib shared-types --directory=libs/shared/types --bundler=tsc`
+- [x] 3.2 Generar `libs/shared/utils`: `nx g @nx/js:lib shared-utils --directory=libs/shared/utils --bundler=tsc`
+- [x] 3.3 Generar `libs/shared/ui`: `nx g @nx/react:lib shared-ui --directory=libs/shared/ui --bundler=vite`
+- [x] 3.4 Generar `libs/shared/constants`: `nx g @nx/js:lib shared-constants --directory=libs/shared/constants --bundler=tsc`
+- [x] 3.5 Generar `libs/auth/utils`: `nx g @nx/js:lib auth-utils --directory=libs/auth/utils --bundler=tsc`
+- [x] 3.6 Generar `libs/testing/utils`: `nx g @nx/js:lib testing-utils --directory=libs/testing/utils --bundler=tsc`
+- [x] 3.7 Generar `libs/config/env`: `nx g @nx/js:lib config-env --directory=libs/config/env --bundler=tsc`
 
 ## Phase 4: Tags & Boundaries
 
