@@ -22,9 +22,10 @@
 | `nestjs` | Modular architecture, guards, interceptors, pipes | [SKILL.md](skills/nestjs/SKILL.md) |
 | `nx-monorepo` | Workspace conventions, lib boundaries, generators | [SKILL.md](skills/nx-monorepo/SKILL.md) |
 | `prisma` | Schema design, migrations, query patterns, relations | [SKILL.md](skills/prisma/SKILL.md) |
-| `zod` | Schema validation, safeParse, inference, integration with forms | [SKILL.md](skills/zod/SKILL.md) |
-| `zustand` | Store slices, selectors, persist middleware | [SKILL.md](skills/zustand/SKILL.md) |
-| `jest` | Unit + integration testing patterns | [SKILL.md](skills/jest/SKILL.md) |
+| `zod-4` | Schema validation, safeParse, inference, integration with forms | [SKILL.md](skills/zod-4/SKILL.md) |
+| `zustand-5` | Store slices, selectors, persist middleware | [SKILL.md](skills/zustand-5/SKILL.md) |
+| `vitest` | Unit + integration tests for React components and hooks | [SKILL.md](skills/vitest/SKILL.md) |
+| `polyglot-test-agent` | Multi-language backend test generation pipeline | [SKILL.md](skills/jest/SKILL.md) |
 | `playwright` | E2E testing, Page Object Model, selectors | [SKILL.md](skills/playwright/SKILL.md) |
 | `tdd` | Test-Driven Development: RED → GREEN → REFACTOR | [SKILL.md](skills/tdd/SKILL.md) |
 | `skill-creator` | Create new AI agent skills for this project | [SKILL.md](skills/skill-creator/SKILL.md) |
@@ -53,14 +54,15 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 |--------|-------|
 | After creating/modifying a skill | `skill-sync` |
 | Creating new skills | `skill-creator` |
-| Creating Zod schemas or validators | `zod` |
-| Creating or modifying Zustand stores | `zustand` |
+| Creating Zod schemas or validators | `zod-4` |
+| Creating or modifying Zustand stores | `zustand-5` |
 | Creating NestJS modules, guards, interceptors, pipes | `nestjs` |
 | Creating NX libs, apps, or generators | `nx-monorepo` |
 | Creating Prisma models or migrations | `prisma` |
 | Writing React components or hooks | `react-19` |
 | Writing TypeScript types/interfaces | `typescript` |
-| Writing unit or integration tests | `jest` |
+| Writing unit or integration tests (React/frontend) | `vitest` |
+| Writing unit or integration tests (NestJS/backend) | `polyglot-test-agent` |
 | Writing E2E tests | `playwright` |
 | Implementing a feature or fixing a bug | `tdd` |
 | Refactoring code | `tdd` |
@@ -99,19 +101,20 @@ A multi-tenant SaaS platform for sports business management — starting with ba
 | Layer | Technology | Version |
 |-------|------------|---------|
 | Monorepo | NX | latest |
-| Language | TypeScript | strict mode |
+| Language | TypeScript | **6 (beta)** — `npm install -D typescript@beta` |
 | Frontend | React | 19 (latest stable) |
 | Backend | NestJS | latest stable |
 | ORM | Prisma | latest stable |
 | Database | PostgreSQL | 16+ |
-| State (client) | Zustand | latest |
+| State (client) | Zustand | **5** |
 | State (server) | React Query (TanStack) | latest |
-| Validation | Zod | latest |
+| Validation | Zod | **4** |
 | Mobile | Capacitor | latest |
 | Auth | JWT + Refresh Tokens | — |
 | Payments | Stripe | latest |
 | Real-time | WebSockets (NestJS Gateways) | — |
-| Testing (unit) | Jest | latest |
+| Testing (unit/frontend) | Vitest + React Testing Library | latest |
+| Testing (unit/backend) | Jest (via polyglot-test-agent) | latest |
 | Testing (E2E) | Playwright | latest |
 | Logging | Winston | latest |
 | Observability | OpenTelemetry | latest |
@@ -194,8 +197,9 @@ libs/
 
 | Type | Tool | What to test |
 |------|------|-------------|
-| Unit | Jest | Services, repositories, utilities, hooks |
-| Integration | Jest | Module integration, DB queries with test DB |
+| Unit (frontend) | Vitest + RTL | React components, hooks, utilities |
+| Unit (backend) | Jest | Services, repositories, NestJS modules |
+| Integration | Jest | DB queries, module wiring, with test DB |
 | E2E | Playwright | Critical user flows, full stack |
 
 - Test files: co-located with source as `*.spec.ts`
