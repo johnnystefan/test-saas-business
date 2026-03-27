@@ -16,9 +16,40 @@ export default [
           enforceBuildableLibDependency: true,
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
           depConstraints: [
+            // Apps can only depend on libs (not other apps)
             {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
+              sourceTag: 'type:app',
+              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:ui', 'type:domain', 'type:constants'],
+            },
+            // BFFs can only depend on libs (not other apps or services)
+            {
+              sourceTag: 'type:bff',
+              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:domain', 'type:constants'],
+            },
+            // Services can only depend on libs
+            {
+              sourceTag: 'type:service',
+              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:domain', 'type:constants'],
+            },
+            // UI libs can only depend on types/util/constants (no domain)
+            {
+              sourceTag: 'type:ui',
+              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:constants'],
+            },
+            // Scope isolation: admin cannot depend on customer-scoped libs
+            {
+              sourceTag: 'scope:admin',
+              notDependOnLibsWithTags: ['scope:customer'],
+            },
+            // Scope isolation: customer cannot depend on admin-scoped libs
+            {
+              sourceTag: 'scope:customer',
+              notDependOnLibsWithTags: ['scope:admin'],
+            },
+            // Platform isolation: node cannot depend on web-only libs
+            {
+              sourceTag: 'platform:node',
+              notDependOnLibsWithTags: ['platform:web'],
             },
           ],
         },

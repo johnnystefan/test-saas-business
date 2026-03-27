@@ -34,11 +34,11 @@
 
 ## Phase 4: Tags & Boundaries
 
-- [ ] 4.1 Agregar tags NX a cada `apps/*/project.json` — ejes `scope`, `type`, `platform` según design
-- [ ] 4.2 Agregar tags NX a cada `libs/**/project.json` — ejes `scope`, `type` (y `platform:web` para `shared-ui`)
-- [ ] 4.3 Actualizar `.eslintrc.json` raíz con `@nx/enforce-module-boundaries` y los `depConstraints` del design
-- [ ] 4.4 Corregir tsconfigs de apps NestJS: cambiar `moduleResolution` a `nodenext`, agregar `"types": ["node"]`, `"rootDir": "./src"`
-- [ ] 4.5 Corregir tsconfigs de apps React: confirmar `moduleResolution: bundler`, `jsx: react-jsx`, eliminar `target: es5` si existe
+- [x] 4.1 Agregar tags NX a cada `apps/*/project.json` — ejes `scope`, `type`, `platform` según design
+- [x] 4.2 Agregar tags NX a cada `libs/**/project.json` — ejes `scope`, `type` (y `platform:web` para `shared-ui`)
+- [x] 4.3 Actualizar `.eslintrc.json` raíz con `@nx/enforce-module-boundaries` y los `depConstraints` del design
+- [x] 4.4 Corregir tsconfigs de apps NestJS: cambiar `moduleResolution` a `node16`, agregar `"types": ["node"]`, `"rootDir": "./src"`
+- [x] 4.5 Corregir tsconfigs de apps React: confirmar `moduleResolution: bundler`, `jsx: react-jsx`, eliminar `target: es5` si existe
 
 ## Phase 5: Verificación
 

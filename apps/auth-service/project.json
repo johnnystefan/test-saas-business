@@ -61,5 +61,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:shared", "type:service", "platform:node"]
 }

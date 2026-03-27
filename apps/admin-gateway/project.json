@@ -61,5 +61,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:admin", "type:bff", "platform:node"]
 }

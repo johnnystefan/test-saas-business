@@ -63,5 +63,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:booking", "type:service", "platform:node"]
 }

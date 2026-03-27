@@ -61,5 +61,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:customer", "type:bff", "platform:node"]
 }

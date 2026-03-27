@@ -61,5 +61,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:club", "type:service", "platform:node"]
 }
