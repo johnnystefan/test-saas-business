@@ -5,12 +5,20 @@ description: >
   Trigger: When implementing client-side state with Zustand (stores, selectors, persist middleware, slices).
 license: Apache-2.0
 metadata:
-  author: prowler-cloud
-  version: "1.0"
-  scope: [root, ui]
-  auto_invoke: "Using Zustand stores"
+  author: gentleman-programming
+  version: '2.0'
+  scope: [admin, customer]
+  auto_invoke: 'Creating or modifying Zustand stores'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
+
+## Project Rules
+
+- Use Zustand **only for client-side global state** (auth, UI preferences, navigation state)
+- Use **React Query** for all server state — never Zustand async fetch actions
+- Always use **devtools** middleware in development stores
+- Always use **selectors** — never destructure the whole store
+- Store files location: `src/features/{feature}/stores/{feature}.store.ts`
 
 ## Basic Store
 
@@ -47,28 +55,28 @@ function Counter() {
 ## Persist Middleware
 
 ```typescript
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface SettingsStore {
-  theme: "light" | "dark";
+  theme: 'light' | 'dark';
   language: string;
-  setTheme: (theme: "light" | "dark") => void;
+  setTheme: (theme: 'light' | 'dark') => void;
   setLanguage: (language: string) => void;
 }
 
 const useSettingsStore = create<SettingsStore>()(
   persist(
     (set) => ({
-      theme: "light",
-      language: "en",
+      theme: 'light',
+      language: 'en',
       setTheme: (theme) => set({ theme }),
       setLanguage: (language) => set({ language }),
     }),
     {
-      name: "settings-storage",  // localStorage key
-    }
-  )
+      name: 'settings-storage', // localStorage key
+    },
+  ),
 );
 ```
 
@@ -117,7 +125,7 @@ const useUserStore = create<UserStore>((set) => ({
       const user = await response.json();
       set({ user, loading: false });
     } catch (error) {
-      set({ error: "Failed to fetch user", loading: false });
+      set({ error: 'Failed to fetch user', loading: false });
     }
   },
 }));
@@ -149,9 +157,10 @@ interface CartSlice {
 const createCartSlice = (set): CartSlice => ({
   items: [],
   addItem: (item) => set((state) => ({ items: [...state.items, item] })),
-  removeItem: (id) => set((state) => ({
-    items: state.items.filter(i => i.id !== id)
-  })),
+  removeItem: (id) =>
+    set((state) => ({
+      items: state.items.filter((i) => i.id !== id),
+    })),
 });
 
 // store.ts
@@ -166,8 +175,8 @@ const useStore = create<Store>()((...args) => ({
 ## Immer Middleware
 
 ```typescript
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
 
 interface TodoStore {
   todos: Todo[];
@@ -179,32 +188,34 @@ const useTodoStore = create<TodoStore>()(
   immer((set) => ({
     todos: [],
 
-    addTodo: (text) => set((state) => {
-      // Mutate directly with Immer!
-      state.todos.push({ id: crypto.randomUUID(), text, done: false });
-    }),
+    addTodo: (text) =>
+      set((state) => {
+        // Mutate directly with Immer!
+        state.todos.push({ id: crypto.randomUUID(), text, done: false });
+      }),
 
-    toggleTodo: (id) => set((state) => {
-      const todo = state.todos.find(t => t.id === id);
-      if (todo) todo.done = !todo.done;
-    }),
-  }))
+    toggleTodo: (id) =>
+      set((state) => {
+        const todo = state.todos.find((t) => t.id === id);
+        if (todo) todo.done = !todo.done;
+      }),
+  })),
 );
 ```
 
 ## DevTools
 
 ```typescript
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 const useStore = create<Store>()(
   devtools(
     (set) => ({
       // store definition
     }),
-    { name: "MyStore" }  // Name in Redux DevTools
-  )
+    { name: 'MyStore' }, // Name in Redux DevTools
+  ),
 );
 ```
 
@@ -216,7 +227,7 @@ const { count, increment } = useCounterStore.getState();
 increment();
 
 // Subscribe to changes
-const unsubscribe = useCounterStore.subscribe(
-  (state) => console.log("Count changed:", state.count)
+const unsubscribe = useCounterStore.subscribe((state) =>
+  console.log('Count changed:', state.count),
 );
 ```
