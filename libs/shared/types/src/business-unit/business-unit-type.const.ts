@@ -1,0 +1,9 @@
+export const BUSINESS_UNIT_TYPE = {
+  BASEBALL_ACADEMY: 'BASEBALL_ACADEMY',
+  GYM: 'GYM',
+  SPORTS_CENTER: 'SPORTS_CENTER',
+  TRAINING_FACILITY: 'TRAINING_FACILITY',
+} as const;
+
+export type BusinessUnitType =
+  (typeof BUSINESS_UNIT_TYPE)[keyof typeof BUSINESS_UNIT_TYPE];
