@@ -5,10 +5,22 @@ description: >
   Trigger: When creating or updating Zod v4 schemas for validation/parsing (forms, request payloads, adapters), including v3 -> v4 migration patterns.
 license: Apache-2.0
 metadata:
-  author: prowler-cloud
-  version: '1.0'
-  scope: [root, ui]
-  auto_invoke: 'Creating Zod schemas'
+  author: saas-business-platform
+  version: '2.0'
+  scope:
+    [
+      root,
+      admin,
+      customer,
+      api-gateway,
+      auth-service,
+      club-service,
+      inventory-service,
+      booking-service,
+      finance-service,
+      libs,
+    ]
+  auto_invoke: 'Creating Zod schemas or validators'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

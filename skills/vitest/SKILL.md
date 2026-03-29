@@ -5,18 +5,18 @@ description: >
   Trigger: When writing unit tests for React components, hooks, or utilities.
 license: Apache-2.0
 metadata:
-  author: prowler-cloud
-  version: "1.0"
-  scope: [root, ui]
+  author: saas-business-platform
+  version: '1.0'
+  scope: [admin, customer]
   auto_invoke:
-    - "Writing Vitest tests"
-    - "Writing React component tests"
-    - "Writing unit tests for UI"
-    - "Testing hooks or utilities"
+    - 'Writing Vitest tests'
+    - 'Writing React component tests'
+    - 'Writing unit tests for UI'
+    - 'Testing hooks or utilities'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, Task
 ---
 
-> **For E2E tests**: Use `prowler-test-ui` skill (Playwright).
+> **For E2E tests**: Use `playwright` skill.
 > This skill covers **unit/integration tests** with Vitest + React Testing Library.
 
 ## Test Structure (REQUIRED)
@@ -44,9 +44,9 @@ it("should update user name when form is submitted", async () => {
 ## Describe Block Organization
 
 ```typescript
-describe("ComponentName", () => {
-  describe("when [condition]", () => {
-    it("should [expected behavior]", () => {});
+describe('ComponentName', () => {
+  describe('when [condition]', () => {
+    it('should [expected behavior]', () => {});
   });
 });
 ```
@@ -57,21 +57,21 @@ describe("ComponentName", () => {
 
 ## Query Priority (REQUIRED)
 
-| Priority | Query | Use Case |
-|----------|-------|----------|
-| 1 | `getByRole` | Buttons, inputs, headings |
-| 2 | `getByLabelText` | Form fields |
-| 3 | `getByPlaceholderText` | Inputs without label |
-| 4 | `getByText` | Static text |
-| 5 | `getByTestId` | Last resort only |
+| Priority | Query                  | Use Case                  |
+| -------- | ---------------------- | ------------------------- |
+| 1        | `getByRole`            | Buttons, inputs, headings |
+| 2        | `getByLabelText`       | Form fields               |
+| 3        | `getByPlaceholderText` | Inputs without label      |
+| 4        | `getByText`            | Static text               |
+| 5        | `getByTestId`          | Last resort only          |
 
 ```typescript
 // ✅ GOOD
-screen.getByRole("button", { name: /submit/i });
+screen.getByRole('button', { name: /submit/i });
 screen.getByLabelText(/email/i);
 
 // ❌ BAD
-container.querySelector(".btn-primary");
+container.querySelector('.btn-primary');
 ```
 
 ---
@@ -82,7 +82,7 @@ container.querySelector(".btn-primary");
 // ✅ ALWAYS use userEvent
 const user = userEvent.setup();
 await user.click(button);
-await user.type(input, "hello");
+await user.type(input, 'hello');
 
 // ❌ NEVER use fireEvent for interactions
 fireEvent.click(button);
@@ -121,7 +121,7 @@ await waitFor(() => {
 const handleClick = vi.fn();
 
 // Mock with return value
-const fetchUser = vi.fn().mockResolvedValue({ name: "John" });
+const fetchUser = vi.fn().mockResolvedValue({ name: 'John' });
 
 // Always clean up
 afterEach(() => {
@@ -131,10 +131,10 @@ afterEach(() => {
 
 ### vi.spyOn vs vi.mock
 
-| Method | When to Use |
-|--------|-------------|
+| Method     | When to Use                           |
+| ---------- | ------------------------------------- |
 | `vi.spyOn` | Observe without replacing (PREFERRED) |
-| `vi.mock` | Replace entire module (use sparingly) |
+| `vi.mock`  | Replace entire module (use sparingly) |
 
 ---
 
@@ -147,12 +147,12 @@ expect(element).toBeVisible();
 
 // State
 expect(button).toBeDisabled();
-expect(input).toHaveValue("text");
+expect(input).toHaveValue('text');
 expect(checkbox).toBeChecked();
 
 // Content
 expect(element).toHaveTextContent(/hello/i);
-expect(element).toHaveAttribute("href", "/home");
+expect(element).toHaveAttribute('href', '/home');
 
 // Functions
 expect(fn).toHaveBeenCalledWith(arg1, arg2);
@@ -171,10 +171,10 @@ expect(component.state.isLoading).toBe(true);
 expect(axios.get).toHaveBeenCalled();
 
 // ❌ Static content (unless conditional)
-expect(screen.getByText("Welcome")).toBeInTheDocument();
+expect(screen.getByText('Welcome')).toBeInTheDocument();
 
 // ✅ User-visible behavior
-expect(screen.getByRole("button")).toBeDisabled();
+expect(screen.getByRole('button')).toBeDisabled();
 ```
 
 ---
