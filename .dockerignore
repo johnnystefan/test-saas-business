@@ -1,0 +1,44 @@
+# =============================================================================
+# .dockerignore — reduces Docker build context size
+#
+# Why this matters: Docker sends the entire build context to the daemon.
+# Without this file, node_modules (~500MB+) and dist/ would be sent on every
+# `docker build`, making builds painfully slow even with layer caching.
+# =============================================================================
+
+# Dependencies — reinstalled inside the container by pnpm
+node_modules
+**/node_modules
+
+# Previous build output — the builder stage produces a fresh one
+dist
+**/dist
+
+# Git history — not needed in the image
+.git
+.gitignore
+
+# Environment files — NEVER bake secrets into an image
+.env
+.env.*
+!.env.example
+
+# Editor / OS artifacts
+.DS_Store
+*.swp
+*.swo
+.vscode
+.idea
+
+# Test coverage / reports
+coverage
+**/coverage
+
+# Docker files themselves (no need to copy into the image)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# NX cache — large, not needed for the build
+.nx/cache
+tmp

@@ -1,36 +1,275 @@
+# =============================================================================
+# Docker Compose — SaaS Business Platform
+#
+# Architecture:
+#   - api-gateway  → REST HTTP :3000  (entry point for all clients: web, mobile)
+#   - auth-service → gRPC :5001 + HTTP :3001 (/health only)
+#   - club-service → gRPC :5002 + HTTP :3002 (/health only)
+#   - booking/finance/inventory → gRPC stubs (no DB yet)
+#
+# Flow:
+#   App/Web → api-gateway:3000 → [gRPC] → microservices
+#
+# Networking:
+#   All services share the `saas-net` bridge network.
+#   gRPC communication uses container names as hostnames (e.g. "auth-service").
+#   Only the api-gateway port (3000) is exposed to the host.
+#
+# Databases:
+#   Each service with Prisma gets its own PostgreSQL instance (isolation per service).
+#   auth-service → postgres-auth  (DB: auth_db)
+#   club-service → postgres-club  (DB: club_db)
+#
+# Startup order:
+#   postgres-* → auth/club-service (runs migrations) → api-gateway
+#
+# Usage:
+#   cp .env.example .env   # fill in secrets
+#   docker compose up --build
+# =============================================================================
+
+name: saas-business
+
+# ---------------------------------------------------------------------------
+# Shared configuration via YAML anchors — avoids repetition
+# ---------------------------------------------------------------------------
+x-service-defaults: &service-defaults
+  restart: unless-stopped
+  networks:
+    - saas-net
+  environment:
+    NODE_ENV: production
+    GRPC_PROTO_DIR: /app/libs/grpc/protos
+
+# ---------------------------------------------------------------------------
+# Services
+# ---------------------------------------------------------------------------
 services:
-  postgres:
+  # ── Databases ─────────────────────────────────────────────────────────────
+
+  postgres-auth:
     image: postgres:16-alpine
-    container_name: saas_business_db
+    container_name: postgres-auth
     restart: unless-stopped
+    networks:
+      - saas-net
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: saas_business_dev
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: ${POSTGRES_AUTH_USER:-saas}
+      POSTGRES_PASSWORD: ${POSTGRES_AUTH_PASSWORD:?POSTGRES_AUTH_PASSWORD is required}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-auth-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_AUTH_USER:-saas} -d auth_db']
       interval: 10s
       timeout: 5s
       retries: 5
 
+  postgres-club:
+    image: postgres:16-alpine
+    container_name: postgres-club
+    restart: unless-stopped
+    networks:
+      - saas-net
+    environment:
+      POSTGRES_DB: club_db
+      POSTGRES_USER: ${POSTGRES_CLUB_USER:-saas}
+      POSTGRES_PASSWORD: ${POSTGRES_CLUB_PASSWORD:?POSTGRES_CLUB_PASSWORD is required}
+    volumes:
+      - postgres-club-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_CLUB_USER:-saas} -d club_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Microservices ──────────────────────────────────────────────────────────
+
+  auth-service:
+    <<: *service-defaults
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP: auth-service
+    # Runs `prisma migrate deploy` then starts the Node process
+    command: ['/bin/sh', '/app/docker/entrypoint-migrate.sh']
+    environment:
+      NODE_ENV: production
+      GRPC_PROTO_DIR: /app/libs/grpc/protos
+      PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_AUTH_USER:-saas}:${POSTGRES_AUTH_PASSWORD}@postgres-auth:5432/auth_db
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRY: ${JWT_EXPIRY:-15m}
+      REFRESH_TOKEN_EXPIRY: ${REFRESH_TOKEN_EXPIRY:-7d}
+    depends_on:
+      postgres-auth:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3001/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+
+  club-service:
+    <<: *service-defaults
+    container_name: club-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP: club-service
+    command: ['/bin/sh', '/app/docker/entrypoint-migrate.sh']
+    environment:
+      NODE_ENV: production
+      GRPC_PROTO_DIR: /app/libs/grpc/protos
+      CLUB_SERVICE_PORT: 3002
+      DATABASE_URL: postgresql://${POSTGRES_CLUB_USER:-saas}:${POSTGRES_CLUB_PASSWORD}@postgres-club:5432/club_db
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+    depends_on:
+      postgres-club:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3002/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+
+  booking-service:
+    <<: *service-defaults
+    container_name: booking-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP: booking-service
+    environment:
+      NODE_ENV: production
+      GRPC_PROTO_DIR: /app/libs/grpc/protos
+      BOOKING_SERVICE_PORT: 3003
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3003/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  finance-service:
+    <<: *service-defaults
+    container_name: finance-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP: finance-service
+    environment:
+      NODE_ENV: production
+      GRPC_PROTO_DIR: /app/libs/grpc/protos
+      FINANCE_SERVICE_PORT: 3004
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3004/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  inventory-service:
+    <<: *service-defaults
+    container_name: inventory-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP: inventory-service
+    environment:
+      NODE_ENV: production
+      GRPC_PROTO_DIR: /app/libs/grpc/protos
+      INVENTORY_SERVICE_PORT: 3005
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3005/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  # ── API Gateway — único punto de entrada desde el exterior ────────────────
+
+  api-gateway:
+    <<: *service-defaults
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP: api-gateway
+    ports:
+      # SOLO este puerto es accesible desde fuera de Docker.
+      # Todo lo demás (gRPC, DBs) vive en la red interna saas-net.
+      - '${API_GATEWAY_PORT:-3000}:3000'
+    environment:
+      NODE_ENV: production
+      GRPC_PROTO_DIR: /app/libs/grpc/protos
+      PORT: 3000
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      # gRPC hostnames — must match container_name of each microservice
+      GRPC_AUTH_HOST: auth-service
+      GRPC_CLUB_HOST: club-service
+      GRPC_BOOKING_HOST: booking-service
+      GRPC_FINANCE_HOST: finance-service
+      GRPC_INVENTORY_HOST: inventory-service
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      club-service:
+        condition: service_healthy
+      booking-service:
+        condition: service_healthy
+      finance-service:
+        condition: service_healthy
+      inventory-service:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  # ── Dev tools (only started with: docker compose --profile tools up) ───────
+
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: saas_business_pgadmin
+    container_name: pgadmin
     restart: unless-stopped
+    networks:
+      - saas-net
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@saas.local
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@saas.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
     ports:
-      - "5050:80"
-    depends_on:
-      postgres:
-        condition: service_healthy
+      - '5050:80'
     profiles:
       - tools
+    depends_on:
+      postgres-auth:
+        condition: service_healthy
 
+# ---------------------------------------------------------------------------
+# Networks — all services communicate internally, nothing exposed except :3000
+# ---------------------------------------------------------------------------
+networks:
+  saas-net:
+    driver: bridge
+
+# ---------------------------------------------------------------------------
+# Volumes — persistent storage survives container restarts
+# ---------------------------------------------------------------------------
 volumes:
-  postgres_data:
+  postgres-auth-data:
+  postgres-club-data:

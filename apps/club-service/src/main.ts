@@ -18,12 +18,17 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new DomainErrorFilter());
 
   // gRPC microservice
-  // In production build, copy proto files to dist; adjust path accordingly
+  // GRPC_PROTO_DIR is set in production (Docker) to the absolute path where
+  // .proto files are copied. In dev (nx serve) it falls back to the monorepo path.
+  const protoDir =
+    process.env['GRPC_PROTO_DIR'] ??
+    join(__dirname, '../../../libs/grpc/protos');
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'club',
-      protoPath: join(__dirname, '../../../libs/grpc/protos/club.proto'),
+      protoPath: join(protoDir, 'club.proto'),
       url: `0.0.0.0:${GRPC_PORTS.CLUB}`,
     },
   });

@@ -13,11 +13,15 @@ async function bootstrap(): Promise<void> {
   app.enableShutdownHooks();
 
   // In production build, copy proto files to dist; adjust path accordingly
+  const protoDir =
+    process.env['GRPC_PROTO_DIR'] ??
+    join(__dirname, '../../../libs/grpc/protos');
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'inventory',
-      protoPath: join(__dirname, '../../../libs/grpc/protos/inventory.proto'),
+      protoPath: join(protoDir, 'inventory.proto'),
       url: `0.0.0.0:${GRPC_PORTS.INVENTORY}`,
     },
   });

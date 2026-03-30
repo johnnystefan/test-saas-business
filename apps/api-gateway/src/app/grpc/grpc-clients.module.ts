@@ -10,6 +10,19 @@ import {
   GRPC_PORTS,
 } from '@saas/grpc';
 
+// In production (Docker), services communicate via container name (e.g. "auth-service").
+// In dev (nx serve), all services run on localhost.
+// GRPC_HOST is injected per-service via Docker Compose environment.
+const protoDir =
+  process.env['GRPC_PROTO_DIR'] ??
+  join(__dirname, '../../../../libs/grpc/protos');
+
+const authHost = process.env['GRPC_AUTH_HOST'] ?? 'localhost';
+const clubHost = process.env['GRPC_CLUB_HOST'] ?? 'localhost';
+const bookingHost = process.env['GRPC_BOOKING_HOST'] ?? 'localhost';
+const financeHost = process.env['GRPC_FINANCE_HOST'] ?? 'localhost';
+const inventoryHost = process.env['GRPC_INVENTORY_HOST'] ?? 'localhost';
+
 @Module({
   imports: [
     ClientsModule.register([
@@ -18,8 +31,8 @@ import {
         transport: Transport.GRPC,
         options: {
           package: 'auth',
-          protoPath: join(__dirname, '../../../../libs/grpc/protos/auth.proto'),
-          url: `localhost:${GRPC_PORTS.AUTH}`,
+          protoPath: join(protoDir, 'auth.proto'),
+          url: `${authHost}:${GRPC_PORTS.AUTH}`,
         },
       },
       {
@@ -27,8 +40,8 @@ import {
         transport: Transport.GRPC,
         options: {
           package: 'club',
-          protoPath: join(__dirname, '../../../../libs/grpc/protos/club.proto'),
-          url: `localhost:${GRPC_PORTS.CLUB}`,
+          protoPath: join(protoDir, 'club.proto'),
+          url: `${clubHost}:${GRPC_PORTS.CLUB}`,
         },
       },
       {
@@ -36,11 +49,8 @@ import {
         transport: Transport.GRPC,
         options: {
           package: 'booking',
-          protoPath: join(
-            __dirname,
-            '../../../../libs/grpc/protos/booking.proto',
-          ),
-          url: `localhost:${GRPC_PORTS.BOOKING}`,
+          protoPath: join(protoDir, 'booking.proto'),
+          url: `${bookingHost}:${GRPC_PORTS.BOOKING}`,
         },
       },
       {
@@ -48,11 +58,8 @@ import {
         transport: Transport.GRPC,
         options: {
           package: 'finance',
-          protoPath: join(
-            __dirname,
-            '../../../../libs/grpc/protos/finance.proto',
-          ),
-          url: `localhost:${GRPC_PORTS.FINANCE}`,
+          protoPath: join(protoDir, 'finance.proto'),
+          url: `${financeHost}:${GRPC_PORTS.FINANCE}`,
         },
       },
       {
@@ -60,11 +67,8 @@ import {
         transport: Transport.GRPC,
         options: {
           package: 'inventory',
-          protoPath: join(
-            __dirname,
-            '../../../../libs/grpc/protos/inventory.proto',
-          ),
-          url: `localhost:${GRPC_PORTS.INVENTORY}`,
+          protoPath: join(protoDir, 'inventory.proto'),
+          url: `${inventoryHost}:${GRPC_PORTS.INVENTORY}`,
         },
       },
     ]),

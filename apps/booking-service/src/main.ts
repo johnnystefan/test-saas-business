@@ -12,11 +12,15 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api/v1');
   app.enableShutdownHooks();
 
+  const protoDir =
+    process.env['GRPC_PROTO_DIR'] ??
+    join(__dirname, '../../../libs/grpc/protos');
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'booking',
-      protoPath: join(__dirname, '../../../libs/grpc/protos/booking.proto'),
+      protoPath: join(protoDir, 'booking.proto'),
       url: `0.0.0.0:${GRPC_PORTS.BOOKING}`,
     },
   });
