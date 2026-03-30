@@ -1,0 +1,47 @@
+syntax = "proto3";
+package finance;
+
+service FinanceService {
+  rpc RecordTransaction (RecordTransactionRequest) returns (TransactionResponse);
+  rpc ListTransactions (ListTransactionsRequest) returns (ListTransactionsResponse);
+  rpc GetSummary (GetSummaryRequest) returns (GetSummaryResponse);
+}
+
+message RecordTransactionRequest {
+  string tenant_id = 1;
+  string type = 2;
+  double amount = 3;
+  string description = 4;
+  string business_unit_id = 5;
+}
+
+message ListTransactionsRequest {
+  string tenant_id = 1;
+  string business_unit_id = 2;
+}
+
+message ListTransactionsResponse {
+  repeated TransactionResponse items = 1;
+}
+
+message TransactionResponse {
+  string id = 1;
+  string tenant_id = 2;
+  string type = 3;
+  double amount = 4;
+  string description = 5;
+  string business_unit_id = 6;
+  string created_at = 7;
+}
+
+message GetSummaryRequest {
+  string tenant_id = 1;
+  string from_date = 2;
+  string to_date = 3;
+}
+
+message GetSummaryResponse {
+  double total_income = 1;
+  double total_expenses = 2;
+  double net_balance = 3;
+}

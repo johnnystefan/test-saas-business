@@ -1,0 +1,57 @@
+syntax = "proto3";
+package booking;
+
+service BookingService {
+  rpc CreateBooking (CreateBookingRequest) returns (BookingResponse);
+  rpc ListBookings (ListBookingsRequest) returns (ListBookingsResponse);
+  rpc CancelBooking (CancelBookingRequest) returns (BookingResponse);
+  rpc GetAvailability (GetAvailabilityRequest) returns (GetAvailabilityResponse);
+}
+
+message CreateBookingRequest {
+  string tenant_id = 1;
+  string member_id = 2;
+  string business_unit_id = 3;
+  string start_time = 4;
+  string end_time = 5;
+}
+
+message CancelBookingRequest {
+  string id = 1;
+  string tenant_id = 2;
+}
+
+message ListBookingsRequest {
+  string tenant_id = 1;
+  string member_id = 2;
+}
+
+message ListBookingsResponse {
+  repeated BookingResponse items = 1;
+}
+
+message BookingResponse {
+  string id = 1;
+  string tenant_id = 2;
+  string member_id = 3;
+  string business_unit_id = 4;
+  string status = 5;
+  string start_time = 6;
+  string end_time = 7;
+}
+
+message GetAvailabilityRequest {
+  string tenant_id = 1;
+  string business_unit_id = 2;
+  string date = 3;
+}
+
+message GetAvailabilityResponse {
+  repeated TimeSlot slots = 1;
+}
+
+message TimeSlot {
+  string start_time = 1;
+  string end_time = 2;
+  bool available = 3;
+}
