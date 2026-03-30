@@ -22,6 +22,9 @@ These are hard violations. Reject the commit if any are found in staged files.
 - Business logic inside a Controller (controllers delegate only)
 - Direct Prisma access inside a Use Case or Service (use repository interface)
 - `tenantId` in request DTOs — must be extracted from JWT payload
+  > Exception: pre-auth endpoints (login, register) where no JWT exists yet.
+  > In those cases, `tenantId` MUST come from a validated header (not body DTO),
+  > and the controller must validate it is non-empty before passing to use cases.
 - Import from another `apps/*` package (cross-app imports forbidden)
 - Import from `apps/*` inside `libs/*`
 
