@@ -4,16 +4,5 @@
   "sourceRoot": "libs/auth/utils/src",
   "projectType": "library",
   "tags": ["scope:auth", "type:util"],
-  "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/auth/utils",
-        "main": "libs/auth/utils/src/index.ts",
-        "tsConfig": "libs/auth/utils/tsconfig.lib.json",
-        "assets": ["libs/auth/utils/*.md"]
-      }
-    }
-  }
+  "targets": {}
 }

@@ -33,7 +33,8 @@
       "config-env": ["libs/config/env/src/index.ts"],
       "@saas/http-proxy": ["libs/shared/http-proxy/src/index.ts"],
       "@saas/nestjs-utils": ["libs/shared/nestjs-utils/src/index.ts"],
-      "nestjs-utils": ["libs/shared/nestjs-utils/src/index.ts"]
+      "nestjs-utils": ["libs/shared/nestjs-utils/src/index.ts"],
+      "@saas/grpc": ["libs/grpc/index.ts"]
     }
   },
   "exclude": ["node_modules", "**/node_modules", "dist", "**/dist"]

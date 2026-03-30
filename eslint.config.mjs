@@ -35,6 +35,7 @@ export default [
                 'type:util',
                 'type:domain',
                 'type:constants',
+                'type:grpc',
               ],
             },
             // Services can only depend on libs
@@ -45,6 +46,7 @@ export default [
                 'type:util',
                 'type:domain',
                 'type:constants',
+                'type:grpc',
               ],
             },
             // Util libs can only depend on types/constants (no domain, no ui)
