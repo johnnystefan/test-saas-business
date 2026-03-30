@@ -1,70 +1,88 @@
 import {
   Controller,
-  InternalServerErrorException,
-  Logger,
   Post,
-  Req,
-  Res,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Headers,
+  BadRequestException,
   UseGuards,
 } from '@nestjs/common';
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import { AuthGrpcService } from '../services/auth-proxy.service';
+import type {
+  GrpcLoginResponse,
+  GrpcRefreshResponse,
+  GrpcRegisterResponse,
+  GrpcLogoutResponse,
+} from '@saas/grpc';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { AuthProxyService } from '../services/auth-proxy.service';
 
-// No class-level guard: register / login / refresh are unauthenticated by design
+interface RegisterBody {
+  readonly email: string;
+  readonly password: string;
+  readonly name: string;
+  readonly role?: string;
+}
+
+interface LoginBody {
+  readonly email: string;
+  readonly password: string;
+}
+
+interface RefreshBody {
+  readonly refreshToken: string;
+}
+
+interface LogoutBody {
+  readonly refreshToken: string;
+}
+
 @Controller('auth')
 export class AuthProxyController {
-  private readonly logger = new Logger(AuthProxyController.name);
-
-  constructor(private readonly proxyService: AuthProxyService) {}
+  constructor(private readonly authGrpcService: AuthGrpcService) {}
 
   @Post('register')
+  @HttpCode(HttpStatus.CREATED)
   async register(
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply,
-  ): Promise<void> {
-    const result = await this.proxyService.proxyToAuth(req, reply);
-    if (result.isErr())
-      this.handleProxyError('POST /auth/register', result.error, reply);
+    @Body() body: RegisterBody,
+    @Headers('x-tenant-id') tenantId: string,
+  ): Promise<GrpcRegisterResponse> {
+    if (!tenantId)
+      throw new BadRequestException('x-tenant-id header is required');
+    return this.authGrpcService.register({
+      email: body.email,
+      password: body.password,
+      name: body.name,
+      tenant_id: tenantId,
+      role: body.role ?? 'MEMBER',
+    });
   }
 
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   async login(
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply,
-  ): Promise<void> {
-    const result = await this.proxyService.proxyToAuth(req, reply);
-    if (result.isErr())
-      this.handleProxyError('POST /auth/login', result.error, reply);
+    @Body() body: LoginBody,
+    @Headers('x-tenant-id') tenantId: string,
+  ): Promise<GrpcLoginResponse> {
+    if (!tenantId)
+      throw new BadRequestException('x-tenant-id header is required');
+    return this.authGrpcService.login({
+      email: body.email,
+      password: body.password,
+      tenant_id: tenantId,
+    });
   }
 
   @Post('refresh')
-  async refresh(
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply,
-  ): Promise<void> {
-    const result = await this.proxyService.proxyToAuth(req, reply);
-    if (result.isErr())
-      this.handleProxyError('POST /auth/refresh', result.error, reply);
+  @HttpCode(HttpStatus.OK)
+  async refresh(@Body() body: RefreshBody): Promise<GrpcRefreshResponse> {
+    return this.authGrpcService.refresh({ refresh_token: body.refreshToken });
   }
 
   @Post('logout')
   @UseGuards(JwtAuthGuard)
-  async logout(
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply,
-  ): Promise<void> {
-    const result = await this.proxyService.proxyToAuth(req, reply);
-    if (result.isErr())
-      this.handleProxyError('POST /auth/logout', result.error, reply);
-  }
-
-  private handleProxyError(
-    route: string,
-    error: { code: string; message: string },
-    _reply: FastifyReply,
-  ): never {
-    this.logger.error(`${route} proxy failed`, { error });
-    throw new InternalServerErrorException('Auth service is unavailable');
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logout(@Body() body: LogoutBody): Promise<GrpcLogoutResponse> {
+    return this.authGrpcService.logout({ refresh_token: body.refreshToken });
   }
 }
