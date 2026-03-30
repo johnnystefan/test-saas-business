@@ -1,20 +1,34 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import type { MicroserviceOptions } from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
+import { join } from 'path';
 import { AppModule } from './app/app.module';
+import { GRPC_PORTS } from '@saas/grpc';
+import { getEnvPort } from '@saas/shared-utils';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  app.setGlobalPrefix('api/v1');
+  app.enableShutdownHooks();
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      package: 'finance',
+      protoPath: join(__dirname, '../../../libs/grpc/protos/finance.proto'),
+      url: `0.0.0.0:${GRPC_PORTS.FINANCE}`,
+    },
+  });
+
+  await app.startAllMicroservices();
+  const port = getEnvPort('FINANCE_SERVICE_PORT', 3004);
   await app.listen(port);
+
+  Logger.log('Finance HTTP running on port ' + String(port), 'Bootstrap');
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+    'Finance gRPC running on port ' + String(GRPC_PORTS.FINANCE),
+    'Bootstrap',
   );
 }
 

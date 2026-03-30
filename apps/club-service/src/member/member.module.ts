@@ -33,5 +33,12 @@ import { ListMembershipsProvider } from './providers/list-memberships.provider';
     UpdateMembershipProvider,
     ListMembershipsProvider,
   ],
+  exports: [
+    RegisterMemberProvider,
+    ListMembersProvider,
+    EnrollMemberProvider,
+    UpdateMembershipProvider,
+    ListMembershipsProvider,
+  ],
 })
 export class MemberModule {}

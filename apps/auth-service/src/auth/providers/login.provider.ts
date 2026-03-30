@@ -26,9 +26,10 @@ export class LoginProvider extends LoginUseCase {
 
   async handle(
     dto: Parameters<LoginUseCase['execute']>[0],
-  ): Promise<TokenPair> {
+  ): Promise<TokenPair & { user: LoginOutput }> {
     const result = await this.execute(dto);
-    return this.issuedTokenPair(result);
+    const tokens = await this.issuedTokenPair(result);
+    return { ...tokens, user: result };
   }
 
   private async issuedTokenPair(result: LoginOutput): Promise<TokenPair> {

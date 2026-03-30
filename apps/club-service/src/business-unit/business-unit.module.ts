@@ -19,6 +19,11 @@ import { BUSINESS_UNIT_TOKENS } from './business-unit.tokens';
     ListBusinessUnitsProvider,
     UpdateBusinessUnitProvider,
   ],
-  exports: [BUSINESS_UNIT_TOKENS.BUSINESS_UNIT_REPOSITORY],
+  exports: [
+    BUSINESS_UNIT_TOKENS.BUSINESS_UNIT_REPOSITORY,
+    CreateBusinessUnitProvider,
+    ListBusinessUnitsProvider,
+    UpdateBusinessUnitProvider,
+  ],
 })
 export class BusinessUnitModule {}
