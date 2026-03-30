@@ -205,11 +205,17 @@ libs/
 | Integration     | Jest         | DB queries, module wiring, with test DB |
 | E2E             | Playwright   | Critical user flows, full stack         |
 
-- Test files: co-located with source as `*.spec.ts`
-- E2E tests: `apps/[app]/e2e/`
+- Test files: **co-located with source** as `*.spec.ts` — same directory as the file under test
+- E2E tests: `apps/[app]/e2e/` — only for real end-to-end flows with the app running
 - **TDD is the default workflow** — RED → GREEN → REFACTOR
 - Every public function MUST have at least one test
 - Every API endpoint MUST have an integration test
+- **Atomic commits**: implementation + spec travel together in the same commit whenever possible
+  - Acceptable: `feat(auth): add login provider` (spec in a follow-up `test(auth):` commit)
+  - Not acceptable: merging to main without any spec coverage for the feature
+
+> **Note for the GGA pre-commit hook**: see `GGA_RULES.md` for what the hook enforces.
+> Missing specs are a WARNING (not a blocker) at commit time — coverage is enforced at PR level.
 
 ---
 
