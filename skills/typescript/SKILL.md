@@ -24,6 +24,111 @@ metadata:
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 
+## Code Readability Philosophy (MANDATORY — applies to ALL business logic)
+
+> **"A good story tells itself."**
+> Business logic code must read like prose. If you need to pause to understand what a block does, rewrite it.
+
+This philosophy applies to:
+
+- Use cases, services, domain entities, repository implementations
+- Custom hooks, containers, presentational helpers
+
+This does **NOT** apply to:
+
+- Framework config files (`tsconfig.json`, `project.json`, `prisma.config.ts`, `jest.config.cts`)
+- NX/NestJS/React infrastructure boilerplate
+- JSON schema files
+
+### The Golden Rule: Separate WHAT from HOW
+
+Public-facing methods (public, exported functions) describe **WHAT** the system does.
+Private/internal methods describe **HOW** it does it.
+
+```typescript
+// ❌ BAD: Public method mixes WHAT and HOW
+async login(dto: LoginDto): Promise<TokenPair> {
+  const user = await this.userRepository.findByEmail(dto.email, dto.tenantId);
+  if (!user) throw new UnauthorizedException('Invalid credentials');
+  const isMatch = await bcrypt.compare(dto.password, user.passwordHash);
+  if (!isMatch) throw new UnauthorizedException('Invalid credentials');
+  const payload = { sub: user.id, email: user.email, role: user.role, tenantId: user.tenantId };
+  const accessToken = signAccessToken(payload, JWT_SECRET);
+  const refreshToken = signRefreshToken(payload, JWT_SECRET);
+  await this.userRepository.saveRefreshToken(user.id, refreshToken, getRefreshTokenExpiresAt());
+  return { accessToken, refreshToken };
+}
+
+// ✅ GOOD: Public method tells the story, private methods do the work
+async login(dto: LoginDto): Promise<TokenPair> {
+  const result = await this.loginUseCase.execute(dto);
+  const tokens = await this.issuedTokenPairFor(result);
+  return tokens;
+}
+
+private async issuedTokenPairFor(result: LoginResult): Promise<TokenPair> {
+  const payload = this.jwtPayload(result);
+  const tokens = this.signedTokenPair(payload);
+  await this.persistedRefreshToken(result.userId, tokens.refreshToken);
+  return tokens;
+}
+
+private jwtPayload(result: LoginResult): JwtPayload { ... }
+private signedTokenPair(payload: JwtPayload): TokenPair { ... }
+private async persistedRefreshToken(userId: string, token: string): Promise<void> { ... }
+```
+
+### File Responsibility Separation
+
+Each file has ONE clear responsibility. When a file starts doing multiple things, split it.
+
+```
+auth/
+  auth.service.ts          → orchestration only (the WHAT)
+  auth.service.helpers.ts  → pure helper functions used by the service
+  auth.mapper.ts           → data transformations (entity ↔ dto ↔ response)
+  auth.builder.ts          → object construction helpers
+  auth.guard.ts            → access control
+```
+
+**Rule:** If you're scrolling to find where a function "fits" in a file, the file has too many responsibilities.
+
+### Naming as Documentation
+
+A well-named function makes its implementation obvious before you read it.
+
+```typescript
+// ❌ BAD: You have to read the body to know what it does
+private process(data: LoginResult) { ... }
+private handleToken(user: User, token: string) { ... }
+private check(token: RefreshToken) { ... }
+
+// ✅ GOOD: The name IS the documentation
+private jwtPayload(result: LoginResult): JwtPayload { ... }
+private persistedRefreshToken(userId: string, token: string): Promise<void> { ... }
+private isTokenValid(token: RefreshToken): boolean { ... }
+```
+
+### Constants Over Magic Values
+
+```typescript
+// ❌ BAD: Magic numbers/strings buried in logic
+const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+if (user.role === 'ADMIN') { ... }
+
+// ✅ GOOD: Named constants that document intent
+const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const expiresAt = new Date(Date.now() + REFRESH_TOKEN_TTL_MS);
+if (user.role === USER_ROLES.ADMIN) { ... }
+```
+
+### No Scrolling Rule
+
+If you have to scroll within a single function to understand its full logic — it's too long. Extract.
+This is not a strict line count — it's a readability test. Ask: _"Can I read this without scrolling?"_
+
+---
+
 ## Const Types Pattern (REQUIRED)
 
 ```typescript

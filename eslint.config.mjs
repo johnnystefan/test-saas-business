@@ -19,22 +19,47 @@ export default [
             // Apps can only depend on libs (not other apps)
             {
               sourceTag: 'type:app',
-              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:ui', 'type:domain', 'type:constants'],
+              onlyDependOnLibsWithTags: [
+                'type:types',
+                'type:util',
+                'type:ui',
+                'type:domain',
+                'type:constants',
+              ],
             },
             // BFFs can only depend on libs (not other apps or services)
             {
               sourceTag: 'type:bff',
-              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:domain', 'type:constants'],
+              onlyDependOnLibsWithTags: [
+                'type:types',
+                'type:util',
+                'type:domain',
+                'type:constants',
+              ],
             },
             // Services can only depend on libs
             {
               sourceTag: 'type:service',
-              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:domain', 'type:constants'],
+              onlyDependOnLibsWithTags: [
+                'type:types',
+                'type:util',
+                'type:domain',
+                'type:constants',
+              ],
+            },
+            // Util libs can only depend on types/constants (no domain, no ui)
+            {
+              sourceTag: 'type:util',
+              onlyDependOnLibsWithTags: ['type:types', 'type:constants'],
             },
             // UI libs can only depend on types/util/constants (no domain)
             {
               sourceTag: 'type:ui',
-              onlyDependOnLibsWithTags: ['type:types', 'type:util', 'type:constants'],
+              onlyDependOnLibsWithTags: [
+                'type:types',
+                'type:util',
+                'type:constants',
+              ],
             },
             // Scope isolation: admin cannot depend on customer-scoped libs
             {
@@ -68,6 +93,15 @@ export default [
       '**/*.mjs',
     ],
     // Override or add rules here
-    rules: {},
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
   },
 ];

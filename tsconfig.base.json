@@ -30,7 +30,10 @@
       "shared-constants": ["libs/shared/constants/src/index.ts"],
       "auth-utils": ["libs/auth/utils/src/index.ts"],
       "testing-utils": ["libs/testing/utils/src/index.ts"],
-      "config-env": ["libs/config/env/src/index.ts"]
+      "config-env": ["libs/config/env/src/index.ts"],
+      "@saas/http-proxy": ["libs/shared/http-proxy/src/index.ts"],
+      "@saas/nestjs-utils": ["libs/shared/nestjs-utils/src/index.ts"],
+      "nestjs-utils": ["libs/shared/nestjs-utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "**/node_modules", "dist", "**/dist"]

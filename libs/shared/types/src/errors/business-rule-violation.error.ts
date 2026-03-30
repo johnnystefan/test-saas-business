@@ -1,20 +1,22 @@
 import {
   DOMAIN_ERROR_TYPE,
   DomainError,
-  DomainErrorCode,
-  DomainErrorContext,
+  type DomainErrorCode,
+  type DomainErrorContext,
 } from './domain-error';
 
 export class BusinessRuleViolationError extends DomainError {
-  readonly code: DomainErrorCode = DOMAIN_ERROR_TYPE.BUSINESS_RULE_VIOLATION;
-  readonly title = 'Business Rule Violation';
+  override readonly code: DomainErrorCode =
+    DOMAIN_ERROR_TYPE.BUSINESS_RULE_VIOLATION;
+  override readonly title = 'Business Rule Violation';
+  override readonly message: string;
 
   constructor({
     message,
     context = {},
   }: {
-    message: string;
-    context?: DomainErrorContext;
+    readonly message: string;
+    readonly context?: DomainErrorContext;
   }) {
     super({ context });
     this.message = message;

@@ -27,17 +27,17 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 apps/your-app/src/
 ├── app/
 │   └── your-resource/
-│       ├── controllers/          # One file per HTTP action
+│       ├── your-resource.controller.ts   # Single controller (default for ≤5 endpoints)
+│       ├── controllers/                  # Split only when needed (6+ endpoints / mixed guards)
 │       │   ├── resource-create.controller.ts
 │       │   └── resource-get.controller.ts
-│       ├── services/             # Orchestration only
 │       ├── providers/            # NestJS DI wrappers (use-case inheritance)
-│       ├── dtos/                 # Zod schemas + nestjs-zod DTOs
+│       ├── dto/                  # Zod schemas + nestjs-zod DTOs
 │       ├── helpers/              # Pure functions extracted from services
 │       │   ├── index.ts          # Barrel export
 │       │   ├── validation.helpers.ts
 │       │   └── response.mapper.ts
-│       ├── core/                 # Constants, injection tokens
+│       ├── your-resource.tokens.ts       # Injection tokens (Symbol)
 │       └── your-resource.module.ts
 ├── core/                         # Global filters, guards, interceptors
 └── main.ts
@@ -45,36 +45,65 @@ apps/your-app/src/
 
 ---
 
-## One Controller Per Action (MANDATORY)
+## Controllers — Structure Rules
 
-Each HTTP operation gets its own controller file.
+Controllers must **only**:
+
+- Validate input via Zod DTOs (automatic via global `ZodValidationPipe`)
+- Call the corresponding provider/use case
+- Return the response
+
+Controllers must **NEVER** contain business logic or infrastructure access.
+
+### When to use ONE controller per resource (default)
+
+For resources with ≤ 5 endpoints and uniform guard/pipe requirements, a single controller file is preferred — it's simpler and easier to navigate.
 
 ```typescript
-// resource-create.controller.ts
-@ApiTags('Resources')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// auth.controller.ts — all 4 auth endpoints in one file
+@Controller('auth')
+export class AuthController {
+  constructor(
+    private readonly registerProvider: RegisterProvider,
+    private readonly loginProvider: LoginProvider,
+  ) {}
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  async register(@Body() dto: RegisterDto) {
+    return this.registerProvider.execute(dto);
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() dto: LoginDto) {
+    return this.loginProvider.execute(dto);
+  }
+}
+```
+
+### When to split into one file per action (recommended)
+
+Split controllers when ANY of these apply:
+
+- Resource has **6+ endpoints**
+- Endpoints have **different guards** (some public, some protected, some role-restricted)
+- A specific endpoint needs **unique interceptors or pipes** that others don't
+- Team size > 3 and merge conflicts on the controller file are frequent
+
+```typescript
+// resource-create.controller.ts — isolated because it needs a different guard
+@UseGuards(AdminGuard) // ← only this endpoint needs admin-only access
 @Controller('resources')
 export class ResourceCreateController {
   constructor(private readonly useCase: ResourceCreateProvider) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new resource' })
-  @ApiResponse({ status: 201 })
   async create(@Body() dto: CreateResourceDto): Promise<ResourceResponseDto> {
-    const result = await this.useCase.run(dto);
-    return { data: result, message: 'Created successfully' };
+    return this.useCase.execute(dto);
   }
 }
 ```
-
-Controllers must **only**:
-
-- Validate input via Zod DTOs (through `ZodValidationPipe`)
-- Call the corresponding use case or service
-- Return the response
-
-Controllers must **NEVER** contain business logic or infrastructure access.
 
 ---
 
@@ -201,10 +230,9 @@ export const RESOURCE_EXTERNAL_SERVICE_TOKEN = Symbol(
 ```typescript
 @Module({
   controllers: [
-    ResourceCreateController,
-    ResourceGetController,
-    ResourceUpdateController,
-    ResourceDeleteController,
+    ResourceController, // Single controller (default)
+    // ResourceCreateController,  // Split only when guards/pipes differ per endpoint
+    // ResourceGetController,
   ],
   providers: [
     { provide: RESOURCE_REPOSITORY_TOKEN, useClass: PrismaResourceRepository },

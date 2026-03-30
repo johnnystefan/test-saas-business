@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/.prisma/club-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model BusinessUnit {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  name      String
+  type      String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  memberships Membership[]
+
+  @@map("business_units")
+}
+
+model Member {
+  id         String   @id @default(uuid())
+  tenantId   String   @map("tenant_id")
+  name       String
+  email      String?
+  phone      String?
+  status     String   @default("ACTIVE")
+  enrolledAt DateTime @default(now()) @map("enrolled_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  memberships Membership[]
+
+  @@unique([email, tenantId])
+  @@map("members")
+}
+
+model Membership {
+  id             String    @id @default(uuid())
+  tenantId       String    @map("tenant_id")
+  memberId       String    @map("member_id")
+  businessUnitId String    @map("business_unit_id")
+  status         String    @default("ACTIVE")
+  startDate      DateTime  @map("start_date")
+  endDate        DateTime? @map("end_date")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  member       Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  businessUnit BusinessUnit @relation(fields: [businessUnitId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, businessUnitId])
+  @@map("memberships")
+}

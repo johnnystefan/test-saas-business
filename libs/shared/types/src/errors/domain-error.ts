@@ -1,11 +1,23 @@
 export const DOMAIN_ERROR_TYPE = {
-  VALIDATION: 'VALIDATION',
-  INVALID_ARGUMENT: 'INVALID_ARGUMENT',
-  BUSINESS_RULE_VIOLATION: 'BUSINESS_RULE_VIOLATION',
-  NOT_FOUND: 'NOT_FOUND',
-  UNAUTHORIZED: 'UNAUTHORIZED',
-  FORBIDDEN: 'FORBIDDEN',
-  CONFLICT: 'CONFLICT',
+  // Resource
+  RESOURCE_NOT_FOUND: 'resource.not_found',
+  RESOURCE_ALREADY_EXISTS: 'resource.already_exists',
+  RESOURCE_CONFLICT: 'resource.conflict',
+
+  // Business
+  BUSINESS_RULE_VIOLATION: 'business.rule_violation',
+  BUSINESS_OPERATION_NOT_ALLOWED: 'business.operation_not_allowed',
+
+  // Validation
+  VALIDATION_ERROR: 'validation.error',
+  INVALID_ARGUMENT: 'invalid.argument',
+
+  // Auth
+  AUTH_AUTHENTICATION_FAILED: 'auth.authentication_failed',
+  AUTH_ACCESS_DENIED: 'auth.access_denied',
+
+  // External
+  EXTERNAL_SERVICE_UNAVAILABLE: 'external.service_unavailable',
 } as const;
 
 export type DomainErrorCode =
