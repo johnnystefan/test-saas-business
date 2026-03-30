@@ -88,12 +88,17 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 COPY --from=builder /workspace/libs/grpc/protos ./libs/grpc/protos
 
 # Copy Prisma client if it exists (auth-service → .prisma/auth-client, etc.)
-# Webpack externalizes these as require(".prisma/<name>-client"), which Node
+# Webpack externalizes these as require(".prisma/auth-client"), which Node
 # resolves relative to main.js — so the client must live at /app/.prisma/
+#
+# The client directory name comes from the schema.prisma `output` field,
+# NOT from the app name. Naming convention: <service-name>-client strips "-service"
+# e.g. auth-service → auth-client, club-service → club-client
 RUN --mount=type=bind,from=builder,source=/workspace/node_modules/.prisma,target=/prisma-clients \
-    if [ -d "/prisma-clients/${APP}-client" ]; then \
+    CLIENT_NAME=$(echo "${APP}" | sed 's/-service$//') && \
+    if [ -d "/prisma-clients/${CLIENT_NAME}-client" ]; then \
       mkdir -p /app/.prisma && \
-      cp -r "/prisma-clients/${APP}-client" "/app/.prisma/${APP}-client"; \
+      cp -r "/prisma-clients/${CLIENT_NAME}-client" "/app/.prisma/${CLIENT_NAME}-client"; \
     fi
 
 # Copy Prisma migration files (only exists for auth-service and club-service)
