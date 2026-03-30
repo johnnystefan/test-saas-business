@@ -1,0 +1,9 @@
+{
+  "name": "nestjs-utils",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/nestjs-utils/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util", "platform:node"],
+  "// targets": "to see all targets run: nx show project nestjs-utils --web",
+  "targets": {}
+}

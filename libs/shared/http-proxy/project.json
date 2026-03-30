@@ -1,0 +1,26 @@
+{
+  "name": "shared-http-proxy",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/http-proxy/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/http-proxy",
+        "main": "libs/shared/http-proxy/src/index.ts",
+        "tsConfig": "libs/shared/http-proxy/tsconfig.lib.json",
+        "assets": ["libs/shared/http-proxy/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/shared/http-proxy"],
+      "options": {
+        "jestConfig": "libs/shared/http-proxy/jest.config.cts"
+      }
+    }
+  }
+}

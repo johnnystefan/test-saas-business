@@ -1,15 +1,12 @@
 {
-  "name": "auth-utils",
+  "name": "shared-http-proxy",
   "version": "0.0.1",
   "private": true,
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "dependencies": {
-    "tslib": "^2.3.0",
-    "shared-types": "*"
+    "tslib": "^2.3.0"
   },
-  "peerDependencies": {
-    "jsonwebtoken": "^9.0.0"
-  }
+  "peerDependencies": {}
 }
