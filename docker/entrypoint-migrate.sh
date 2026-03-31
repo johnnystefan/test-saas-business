@@ -17,7 +17,7 @@
 set -e
 
 echo "[entrypoint] Running Prisma migrations..."
-/app/node_modules/.bin/prisma migrate deploy --schema=/app/prisma/schema.prisma
+/app/node_modules/.bin/prisma migrate deploy --config=/app/prisma.config.ts
 
 echo "[entrypoint] Migrations complete. Starting service..."
 exec node /app/main.js
