@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'strategy pattern, interchangeable algorithms, runtime behavior swap'
+  auto_invoke:
+    - 'strategy pattern, interchangeable algorithms, runtime behavior swap'
+    - 'use case has multiple validation strategies or business rules that vary by type'
+    - 'behavior differs based on entity type, membership tier, or business unit category'
+    - 'need to swap algorithm at runtime without changing the calling code'
+    - 'replacing a large if-else or switch that selects different processing logic'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

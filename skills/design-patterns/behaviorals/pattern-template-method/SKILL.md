@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'template method pattern, algorithm skeleton, hook methods'
+  auto_invoke:
+    - 'template method pattern, algorithm skeleton, hook methods'
+    - 'NestJS provider class extends a base use case with shared pre/post steps'
+    - 'multiple use cases share the same flow structure but differ in one or two steps'
+    - 'base class defines the sequence of operations, subclasses fill in the details'
+    - 'need invariant workflow with customizable steps across service variants'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

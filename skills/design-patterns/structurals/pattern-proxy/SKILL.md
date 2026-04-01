@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'proxy pattern, access control, lazy loading, virtual proxy'
+  auto_invoke:
+    - 'proxy pattern, access control, lazy loading, virtual proxy'
+    - 'NestJS guard or interceptor that controls access to a resource before delegating'
+    - 'lazy-loading a heavy domain aggregate only when its properties are accessed'
+    - 'adding rate limiting, caching, or logging transparently around a service call'
+    - 'wrapping a repository to enforce tenant isolation on every query automatically'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

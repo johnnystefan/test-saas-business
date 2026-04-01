@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'flyweight pattern, shared state, memory optimization'
+  auto_invoke:
+    - 'flyweight pattern, shared state, memory optimization'
+    - 'thousands of similar objects (slots, availability records) with mostly shared data'
+    - 'caching immutable configuration or reference data shared across many instances'
+    - 'need to reduce memory footprint for large collections of fine-grained objects'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

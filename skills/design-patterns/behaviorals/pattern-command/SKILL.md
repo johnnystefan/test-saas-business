@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'command pattern, undo redo, action queue, request encapsulation'
+  auto_invoke:
+    - 'command pattern, undo redo, action queue, request encapsulation'
+    - 'encapsulate a use case invocation as an object to queue, retry, or log'
+    - 'need audit trail of all write operations performed on an entity'
+    - 'scheduling or queuing domain actions for deferred execution'
+    - 'implementing transactional outbox or job queue for domain events'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

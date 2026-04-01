@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'adapter pattern, interface wrapper, legacy integration'
+  auto_invoke:
+    - 'adapter pattern, interface wrapper, legacy integration'
+    - 'Prisma record must be converted into a domain entity in the repository layer'
+    - 'third-party SDK response must be mapped to an internal domain type'
+    - 'wrapping an external API client to match the IRepository or IService interface'
+    - 'toDomain() or fromPrisma() mapping logic in infrastructure layer'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

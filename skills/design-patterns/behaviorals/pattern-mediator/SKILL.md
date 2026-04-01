@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'mediator pattern, event bus, component decoupling'
+  auto_invoke:
+    - 'mediator pattern, event bus, component decoupling'
+    - 'multiple use cases need to communicate without importing each other directly'
+    - 'cross-service coordination where services must not depend on each other'
+    - 'need a central command/event bus to route actions between handlers'
+    - 'CQRS command bus or event bus implementation'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'state pattern, finite state machine, workflow states'
+  auto_invoke:
+    - 'state pattern, finite state machine, workflow states'
+    - 'entity has a status field that controls allowed transitions (active, suspended, expired)'
+    - 'membership or booking lifecycle with valid and invalid state transitions'
+    - 'method behavior changes based on current entity status'
+    - 'need to prevent invalid transitions like activating an already-expired membership'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

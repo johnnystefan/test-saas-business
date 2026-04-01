@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'decorator pattern, dynamic behavior, wrapper object'
+  auto_invoke:
+    - 'decorator pattern, dynamic behavior, wrapper object'
+    - 'adding cross-cutting behavior (logging, caching, retry) to a NestJS provider without modifying it'
+    - 'wrapping a repository or use case to add observability or metrics'
+    - 'need to compose behaviors at runtime instead of hardcoding them in the class'
+    - 'CachedRepository wrapping PrismaRepository, or LoggedUseCase wrapping a use case'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

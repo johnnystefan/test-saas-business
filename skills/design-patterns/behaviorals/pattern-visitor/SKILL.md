@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'visitor pattern, double dispatch, object structure operations'
+  auto_invoke:
+    - 'visitor pattern, double dispatch, object structure operations'
+    - 'need to add a new operation to a domain entity hierarchy without modifying the entities'
+    - 'applying different logic to each subtype of an entity without instanceof checks'
+    - 'report generation or data export that varies per entity type'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

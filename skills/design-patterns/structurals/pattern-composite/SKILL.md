@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'composite pattern, tree structure, part-whole hierarchy'
+  auto_invoke:
+    - 'composite pattern, tree structure, part-whole hierarchy'
+    - 'permission or role hierarchy where groups contain sub-groups and individual rules'
+    - 'nested pricing or discount rules where combined rules evaluate as one'
+    - 'organization or club hierarchy with departments containing sub-departments'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

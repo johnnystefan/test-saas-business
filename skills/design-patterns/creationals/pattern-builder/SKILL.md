@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'builder pattern, fluent builder, step by step construction'
+  auto_invoke:
+    - 'builder pattern, fluent builder, step by step construction'
+    - 'Object Mother or test fixture with many optional fields needing a fluent API'
+    - 'constructing a complex domain object or DTO with more than 4-5 optional parameters'
+    - 'need to produce different representations of the same domain concept'
+    - 'building query objects or filter criteria incrementally'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

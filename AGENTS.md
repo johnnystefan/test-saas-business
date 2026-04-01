@@ -148,6 +148,10 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Action | Skill |
 |--------|-------|
 | After creating/modifying a skill | `skill-sync` |
+| BFF API Gateway aggregating multiple microservice calls behind a single endpoint | `pattern-facade` |
+| BusinessUnit.create(), Member.create(), or Membership.create() static factory | `pattern-factory-method` |
+| CQRS command bus or event bus implementation | `pattern-mediator` |
+| CachedRepository wrapping PrismaRepository, or LoggedUseCase wrapping a use case | `pattern-decorator` |
 | Creating Zod schemas or validators | `zod-4` |
 | Creating new skills | `skill-creator` |
 | Designing class relationships or reviewing object lifecycle ownership | `fundamentals/object-relationships` |
@@ -162,7 +166,14 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Modifying component | `tdd` |
 | Monitoring CI pipeline or self-healing fixes | `monitor-ci` |
 | Moving methods or fields between classes to improve cohesion | `refactoring/moving-features` |
+| NestJS global provider like PrismaService, ConfigService, or Logger | `pattern-singleton` |
+| NestJS guard or interceptor that controls access to a resource before delegating | `pattern-proxy` |
+| NestJS guard, interceptor, or pipe chain that processes a request sequentially | `pattern-chain-of-responsibility` |
+| NestJS provider class extends a base use case with shared pre/post steps | `pattern-template-method` |
+| NestJS service that hides the complexity of multiple providers behind one method | `pattern-facade` |
+| Object Mother or test fixture with many optional fields needing a fluent API | `pattern-builder` |
 | Planning a refactoring session or evaluating technical debt priority | `refactoring/strategy` |
+| Prisma record must be converted into a domain entity in the repository layer | `pattern-adapter` |
 | Refactoring class hierarchies or managing inheritance structures | `refactoring/generalization` |
 | Refactoring code | `tdd` |
 | Refactoring data structures or replacing primitives with domain objects | `refactoring/organizing-data` |
@@ -182,27 +193,95 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Writing TypeScript types/interfaces | `typescript` |
 | Writing unit or integration tests (NestJS/backend) | `polyglot-test-agent` |
 | abstract factory pattern, product families, object creation | `pattern-abstract-factory` |
+| abstracting notification sending from the notification channel (email, SMS, push) | `pattern-bridge` |
 | adapter pattern, interface wrapper, legacy integration | `pattern-adapter` |
+| adding cross-cutting behavior (logging, caching, retry) to a NestJS provider without modifying it | `pattern-decorator` |
+| adding rate limiting, caching, or logging transparently around a service call | `pattern-proxy` |
+| aggregate root exposes children collection that needs controlled iteration | `pattern-iterator` |
+| applying different logic to each subtype of an entity without instanceof checks | `pattern-visitor` |
+| base class defines the sequence of operations, subclasses fill in the details | `pattern-template-method` |
+| behavior differs based on entity type, membership tier, or business unit category | `pattern-strategy` |
 | bridge pattern, abstraction implementation split, platform independence | `pattern-bridge` |
 | builder pattern, fluent builder, step by step construction | `pattern-builder` |
+| building query objects or filter criteria incrementally | `pattern-builder` |
+| caching immutable configuration or reference data shared across many instances | `pattern-flyweight` |
 | chain of responsibility pattern, handler chain, middleware pipeline | `pattern-chain-of-responsibility` |
 | command pattern, undo redo, action queue, request encapsulation | `pattern-command` |
 | composite pattern, tree structure, part-whole hierarchy | `pattern-composite` |
+| connection pool, cache client, or configuration registry that must not be duplicated | `pattern-singleton` |
+| constructing a complex domain object or DTO with more than 4-5 optional parameters | `pattern-builder` |
+| construction logic must validate invariants before returning a valid entity | `pattern-factory-method` |
+| controller delegates to a facade instead of calling multiple services directly | `pattern-facade` |
+| creating a modified copy of an existing entity for a new tenant or configuration | `pattern-prototype` |
+| cross-service coordination where services must not depend on each other | `pattern-mediator` |
+| custom traversal logic over a list of entities (paginated, filtered, lazy) | `pattern-iterator` |
 | decorator pattern, dynamic behavior, wrapper object | `pattern-decorator` |
+| decoupling caller from knowing how to construct a domain object | `pattern-factory-method` |
+| deep cloning complex aggregate roots for use in tests or templates | `pattern-prototype` |
+| domain entity needs a static create() method that encapsulates construction logic | `pattern-factory-method` |
+| encapsulate a use case invocation as an object to queue, retry, or log | `pattern-command` |
+| entity has a status field that controls allowed transitions (active, suspended, expired) | `pattern-state` |
+| entity state change must trigger side effects in other services | `pattern-observer` |
 | facade pattern, simplified interface, subsystem abstraction | `pattern-facade` |
 | factory method pattern, object creation, subclass instantiation | `pattern-factory-method` |
 | flyweight pattern, shared state, memory optimization | `pattern-flyweight` |
+| implementing draft/publish workflow where changes can be reverted | `pattern-memento` |
+| implementing transactional outbox or job queue for domain events | `pattern-command` |
 | iterator pattern, collection traversal, custom iterator | `pattern-iterator` |
+| lazy-loading a heavy domain aggregate only when its properties are accessed | `pattern-proxy` |
 | mediator pattern, event bus, component decoupling | `pattern-mediator` |
+| membership activated, booking confirmed, or payment processed triggers downstream actions | `pattern-observer` |
+| membership or booking lifecycle with valid and invalid state transitions | `pattern-state` |
 | memento pattern, state snapshot, undo history | `pattern-memento` |
+| method behavior changes based on current entity status | `pattern-state` |
+| multi-tenant setup where each tenant variant produces a different but compatible set of services | `pattern-abstract-factory` |
+| multiple use cases need to communicate without importing each other directly | `pattern-mediator` |
+| multiple use cases share the same flow structure but differ in one or two steps | `pattern-template-method` |
+| need a central command/event bus to route actions between handlers | `pattern-mediator` |
+| need audit trail of all write operations performed on an entity | `pattern-command` |
+| need invariant workflow with customizable steps across service variants | `pattern-template-method` |
+| need to add a new operation to a domain entity hierarchy without modifying the entities | `pattern-visitor` |
+| need to add or remove processing steps without changing the core flow | `pattern-chain-of-responsibility` |
+| need to clone a domain entity or value object without coupling to its concrete type | `pattern-prototype` |
+| need to compose behaviors at runtime instead of hardcoding them in the class | `pattern-decorator` |
+| need to create families of related domain objects that must be compatible | `pattern-abstract-factory` |
+| need to decouple event producer from event consumers | `pattern-observer` |
+| need to prevent invalid transitions like activating an already-expired membership | `pattern-state` |
+| need to produce different representations of the same domain concept | `pattern-builder` |
+| need to reduce memory footprint for large collections of fine-grained objects | `pattern-flyweight` |
+| need to save and restore an entity state before a risky operation | `pattern-memento` |
+| need to swap algorithm at runtime without changing the calling code | `pattern-strategy` |
+| need to traverse a domain collection without exposing its internal structure | `pattern-iterator` |
+| need to vary both abstraction and implementation independently | `pattern-bridge` |
+| nested pricing or discount rules where combined rules evaluate as one | `pattern-composite` |
 | observer pattern, pub sub, event driven, reactive updates | `pattern-observer` |
+| organization or club hierarchy with departments containing sub-departments | `pattern-composite` |
+| permission or role hierarchy where groups contain sub-groups and individual rules | `pattern-composite` |
 | prototype pattern, object cloning, copy constructor | `pattern-prototype` |
 | proxy pattern, access control, lazy loading, virtual proxy | `pattern-proxy` |
+| replacing a large if-else or switch that selects different processing logic | `pattern-strategy` |
+| report generation or data export that varies per entity type | `pattern-visitor` |
+| request must pass through multiple checks before reaching the handler | `pattern-chain-of-responsibility` |
+| scheduling or queuing domain actions for deferred execution | `pattern-command` |
+| separating payment processing logic from the payment provider (Stripe, PayPal) | `pattern-bridge` |
+| shared resource that must have exactly one instance per application lifetime | `pattern-singleton` |
 | singleton pattern, single instance, global access point | `pattern-singleton` |
 | state pattern, finite state machine, workflow states | `pattern-state` |
+| store entity snapshots for audit trail or rollback capability | `pattern-memento` |
 | strategy pattern, interchangeable algorithms, runtime behavior swap | `pattern-strategy` |
 | template method pattern, algorithm skeleton, hook methods | `pattern-template-method` |
+| test infrastructure that needs to swap between real and mock implementations as a set | `pattern-abstract-factory` |
+| third-party SDK response must be mapped to an internal domain type | `pattern-adapter` |
+| thousands of similar objects (slots, availability records) with mostly shared data | `pattern-flyweight` |
+| toDomain() or fromPrisma() mapping logic in infrastructure layer | `pattern-adapter` |
+| use case has multiple validation strategies or business rules that vary by type | `pattern-strategy` |
+| use case needs to notify multiple subsystems after a domain event | `pattern-observer` |
+| validation pipeline where each step decides to continue or reject | `pattern-chain-of-responsibility` |
 | visitor pattern, double dispatch, object structure operations | `pattern-visitor` |
+| wrapping a complex module (Stripe, auth, notifications) to expose a simple API | `pattern-facade` |
+| wrapping a repository or use case to add observability or metrics | `pattern-decorator` |
+| wrapping a repository to enforce tenant isolation on every query automatically | `pattern-proxy` |
+| wrapping an external API client to match the IRepository or IService interface | `pattern-adapter` |
 
 ---
 

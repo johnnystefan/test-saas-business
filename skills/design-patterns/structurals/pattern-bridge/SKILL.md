@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'bridge pattern, abstraction implementation split, platform independence'
+  auto_invoke:
+    - 'bridge pattern, abstraction implementation split, platform independence'
+    - 'abstracting notification sending from the notification channel (email, SMS, push)'
+    - 'separating payment processing logic from the payment provider (Stripe, PayPal)'
+    - 'need to vary both abstraction and implementation independently'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

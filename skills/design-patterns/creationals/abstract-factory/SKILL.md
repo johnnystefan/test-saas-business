@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'abstract factory pattern, product families, object creation'
+  auto_invoke:
+    - 'abstract factory pattern, product families, object creation'
+    - 'need to create families of related domain objects that must be compatible'
+    - 'multi-tenant setup where each tenant variant produces a different but compatible set of services'
+    - 'test infrastructure that needs to swap between real and mock implementations as a set'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

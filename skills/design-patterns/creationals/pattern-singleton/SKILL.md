@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'singleton pattern, single instance, global access point'
+  auto_invoke:
+    - 'singleton pattern, single instance, global access point'
+    - 'shared resource that must have exactly one instance per application lifetime'
+    - 'NestJS global provider like PrismaService, ConfigService, or Logger'
+    - 'connection pool, cache client, or configuration registry that must not be duplicated'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

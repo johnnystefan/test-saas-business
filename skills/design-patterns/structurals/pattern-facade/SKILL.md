@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'facade pattern, simplified interface, subsystem abstraction'
+  auto_invoke:
+    - 'facade pattern, simplified interface, subsystem abstraction'
+    - 'BFF API Gateway aggregating multiple microservice calls behind a single endpoint'
+    - 'NestJS service that hides the complexity of multiple providers behind one method'
+    - 'wrapping a complex module (Stripe, auth, notifications) to expose a simple API'
+    - 'controller delegates to a facade instead of calling multiple services directly'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'observer pattern, pub sub, event driven, reactive updates'
+  auto_invoke:
+    - 'observer pattern, pub sub, event driven, reactive updates'
+    - 'use case needs to notify multiple subsystems after a domain event'
+    - 'entity state change must trigger side effects in other services'
+    - 'need to decouple event producer from event consumers'
+    - 'membership activated, booking confirmed, or payment processed triggers downstream actions'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

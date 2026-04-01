@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'memento pattern, state snapshot, undo history'
+  auto_invoke:
+    - 'memento pattern, state snapshot, undo history'
+    - 'need to save and restore an entity state before a risky operation'
+    - 'implementing draft/publish workflow where changes can be reverted'
+    - 'store entity snapshots for audit trail or rollback capability'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

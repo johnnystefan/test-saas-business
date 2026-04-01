@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'prototype pattern, object cloning, copy constructor'
+  auto_invoke:
+    - 'prototype pattern, object cloning, copy constructor'
+    - 'need to clone a domain entity or value object without coupling to its concrete type'
+    - 'creating a modified copy of an existing entity for a new tenant or configuration'
+    - 'deep cloning complex aggregate roots for use in tests or templates'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'chain of responsibility pattern, handler chain, middleware pipeline'
+  auto_invoke:
+    - 'chain of responsibility pattern, handler chain, middleware pipeline'
+    - 'NestJS guard, interceptor, or pipe chain that processes a request sequentially'
+    - 'validation pipeline where each step decides to continue or reject'
+    - 'request must pass through multiple checks before reaching the handler'
+    - 'need to add or remove processing steps without changing the core flow'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

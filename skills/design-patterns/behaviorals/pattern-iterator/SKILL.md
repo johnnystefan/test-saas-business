@@ -9,7 +9,11 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'iterator pattern, collection traversal, custom iterator'
+  auto_invoke:
+    - 'iterator pattern, collection traversal, custom iterator'
+    - 'need to traverse a domain collection without exposing its internal structure'
+    - 'custom traversal logic over a list of entities (paginated, filtered, lazy)'
+    - 'aggregate root exposes children collection that needs controlled iteration'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 

@@ -9,7 +9,12 @@ metadata:
   author: gentleman-programming
   version: '1.0'
   scope: [root]
-  auto_invoke: 'factory method pattern, object creation, subclass instantiation'
+  auto_invoke:
+    - 'factory method pattern, object creation, subclass instantiation'
+    - 'domain entity needs a static create() method that encapsulates construction logic'
+    - 'BusinessUnit.create(), Member.create(), or Membership.create() static factory'
+    - 'construction logic must validate invariants before returning a valid entity'
+    - 'decoupling caller from knowing how to construct a domain object'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 
