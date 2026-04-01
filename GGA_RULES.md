@@ -3,6 +3,13 @@
 > These rules apply to the **Gentleman Guardian Angel** pre-commit hook.
 > Scope: staged files only. The GGA reviews code quality in the diff — not project-wide coverage.
 
+## Pre-commit Pipeline (runs before GGA)
+
+These checks run first and are **deterministic** (not AI). They block before GGA even runs:
+
+1. **No direct commits to `main`/`master`** — use a feature branch + PR
+2. **TruffleHog secret scan** — detects verified secrets (tokens that respond to real API calls)
+
 ---
 
 ## What the GGA MUST block (CRITICAL)
