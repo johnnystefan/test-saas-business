@@ -11,6 +11,7 @@ describe('UpdateBusinessUnitUseCase', () => {
     mockRepository = {
       create: jest.fn().mockResolvedValue(BusinessUnitMother.active()),
       findById: jest.fn().mockResolvedValue(BusinessUnitMother.active()),
+      findByNameAndTenant: jest.fn().mockResolvedValue(null),
       findAllByTenant: jest.fn().mockResolvedValue([]),
       update: jest
         .fn()

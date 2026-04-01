@@ -1,4 +1,5 @@
 import { CreateBusinessUnitUseCase } from './create-business-unit.use-case';
+import { ResourceAlreadyExistsError } from '@saas/shared-types';
 import type { IBusinessUnitRepository } from '../business-unit/i-business-unit.repository';
 import { BusinessUnitMother } from './__tests__/mothers/business-unit.mother';
 
@@ -10,6 +11,7 @@ describe('CreateBusinessUnitUseCase', () => {
     mockRepository = {
       create: jest.fn().mockResolvedValue(BusinessUnitMother.active()),
       findById: jest.fn().mockResolvedValue(null),
+      findByNameAndTenant: jest.fn().mockResolvedValue(null),
       findAllByTenant: jest.fn().mockResolvedValue([]),
       update: jest.fn().mockResolvedValue(BusinessUnitMother.active()),
     } as jest.Mocked<IBusinessUnitRepository>;
@@ -31,6 +33,59 @@ describe('CreateBusinessUnitUseCase', () => {
     // Assert
     expect(actualResult).toBeDefined();
     expect(actualResult.name.value).toBe('Baseball Academy');
+    expect(mockRepository.create).toHaveBeenCalledWith(inputData);
+  });
+
+  it('should check name uniqueness within the tenant before creating', async () => {
+    // Arrange
+    const inputData = {
+      tenantId: 'tenant-1',
+      name: 'Baseball Academy',
+      type: 'BASEBALL_ACADEMY' as const,
+    };
+
+    // Act
+    await useCase.execute(inputData);
+
+    // Assert
+    expect(mockRepository.findByNameAndTenant).toHaveBeenCalledWith(
+      'Baseball Academy',
+      'tenant-1',
+    );
+  });
+
+  it('should throw ResourceAlreadyExistsError when a business unit with the same name exists in the tenant', async () => {
+    // Arrange
+    mockRepository.findByNameAndTenant.mockResolvedValue(
+      BusinessUnitMother.active(),
+    );
+    const inputData = {
+      tenantId: 'tenant-1',
+      name: 'Baseball Academy',
+      type: 'BASEBALL_ACADEMY' as const,
+    };
+
+    // Act & Assert
+    await expect(useCase.execute(inputData)).rejects.toThrow(
+      ResourceAlreadyExistsError,
+    );
+    expect(mockRepository.create).not.toHaveBeenCalled();
+  });
+
+  it('should allow same name in different tenants', async () => {
+    // Arrange — name is free in tenant-2 even though it exists in tenant-1
+    mockRepository.findByNameAndTenant.mockResolvedValue(null);
+    const inputData = {
+      tenantId: 'tenant-2',
+      name: 'Baseball Academy',
+      type: 'BASEBALL_ACADEMY' as const,
+    };
+
+    // Act
+    const actualResult = await useCase.execute(inputData);
+
+    // Assert
+    expect(actualResult).toBeDefined();
     expect(mockRepository.create).toHaveBeenCalledWith(inputData);
   });
 });

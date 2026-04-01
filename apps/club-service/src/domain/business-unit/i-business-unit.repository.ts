@@ -7,6 +7,10 @@ import type {
 export interface IBusinessUnitRepository {
   create(data: CreateBusinessUnitData): Promise<BusinessUnit>;
   findById(id: string, tenantId: string): Promise<BusinessUnit | null>;
+  findByNameAndTenant(
+    name: string,
+    tenantId: string,
+  ): Promise<BusinessUnit | null>;
   findAllByTenant(tenantId: string): Promise<BusinessUnit[]>;
   update(
     id: string,
