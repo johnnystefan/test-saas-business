@@ -34,6 +34,16 @@ export class PrismaBusinessUnitRepository implements IBusinessUnitRepository {
     return record ? this.toDomain(record) : null;
   }
 
+  async findByNameAndTenant(
+    name: string,
+    tenantId: string,
+  ): Promise<BusinessUnit | null> {
+    const record = await this.prisma.businessUnit.findFirst({
+      where: { name, tenantId },
+    });
+    return record ? this.toDomain(record) : null;
+  }
+
   async findAllByTenant(tenantId: string): Promise<BusinessUnit[]> {
     const records = await this.prisma.businessUnit.findMany({
       where: { tenantId },

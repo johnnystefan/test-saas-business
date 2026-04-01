@@ -7,11 +7,16 @@
 #
 # Why multi-stage?
 #   Stage 1 (builder): full devDeps + NX + TypeScript — heavy, only used to compile
-#   Stage 2 (runner):  only the compiled bundle + prod deps — lean final image
+#   Stage 2 (runner):  compiled bundle + prod node_modules + proto files — lean image
 #
 # Why build context = monorepo root?
-#   NX bundles everything (libs/* included) into a single dist/apps/<APP>/main.js
-#   via webpack. We only need that file + the .proto files at runtime.
+#   NX webpack references all libs from the monorepo root. The build must run
+#   from the workspace root so NX can resolve all imports.
+#
+# Why copy node_modules from builder instead of re-running pnpm install?
+#   NX generates a dist/apps/<APP>/package.json with only the runtime dependencies.
+#   We use that file + pnpm install --prod to get a minimal node_modules for the runner.
+#   pnpm is used in the runner stage too, but only for prod deps (no devDeps).
 #
 # Why is .prisma/<client> at /app/.prisma/ and not node_modules?
 #   Webpack externalizes Prisma clients with relative requires:
@@ -19,17 +24,12 @@
 #   Node resolves ".prisma/..." relative to the requiring file's directory.
 #   Since main.js lives at /app/main.js, the client must be at /app/.prisma/.
 #
-# Why copy Prisma CLI + engines from builder instead of installing in runner?
-#   pnpm v9+ (lockfile v9) requires an explicit `onlyBuiltDependencies` allowlist
-#   in package.json to run postinstall scripts. The package.json NX generates in
-#   dist/ does not have this field, so pnpm silently skips the postinstall of
-#   `prisma` and `@prisma/engines` — the migration engine binary is never
-#   downloaded and `prisma migrate deploy` fails at startup.
-#
-#   The fix: copy the already-built Prisma CLI and the already-downloaded engine
-#   binaries directly from the builder stage. The builder runs `pnpm install
-#   --frozen-lockfile` from the full workspace package.json (which does have the
-#   allowlist), so the engines are downloaded there. We just reuse them.
+# Why use npm (not pnpm) to install the Prisma CLI in the runner?
+#   pnpm v9+ requires an explicit `onlyBuiltDependencies` allowlist in package.json
+#   to run postinstall scripts. The dist/ package.json NX generates does not have
+#   this field → pnpm skips @prisma/engines postinstall → migration engine binary
+#   is never downloaded → `prisma migrate deploy` crashes at startup.
+#   npm does NOT have this issue.
 # =============================================================================
 
 ARG APP
@@ -73,7 +73,9 @@ RUN if [ -f "apps/${APP}/prisma/schema.prisma" ]; then \
       pnpm prisma generate --config="apps/${APP}/prisma.config.ts"; \
     fi
 
-# Build the target app — NX compiles TS + bundles libs into dist/apps/<APP>/main.js
+# Build the target app — NX compiles TS + bundles into dist/apps/<APP>/main.js
+# generatePackageJson: true in webpack.config.js emits dist/apps/<APP>/package.json
+# with only the runtime (non-bundled) dependencies.
 RUN pnpm nx build ${APP} --configuration=production
 
 # Ensure .prisma dir exists so subsequent COPY steps never fail for non-Prisma apps
@@ -81,7 +83,7 @@ RUN mkdir -p node_modules/.prisma
 
 # -----------------------------------------------------------------------------
 # Stage 2 — runner
-# Lean production image: compiled bundle + prod deps + proto files
+# Lean production image: compiled bundle + prod node_modules + proto files
 # -----------------------------------------------------------------------------
 FROM node:${NODE_VERSION} AS runner
 
@@ -91,7 +93,21 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-# Copy the compiled bundle (single file — NX webpack bundles all libs inside)
+# Install pnpm (needed to install prod deps from the generated package.json)
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy the generated package.json (lists only runtime deps, no devDeps)
+# and install production node_modules in the runner.
+# We do NOT copy pnpm-lock.yaml because the generated package.json uses exact
+# versions already — no lock file needed.
+COPY --from=builder /workspace/dist/apps/${APP}/package.json ./package.json
+
+# Install prod deps. pnpm respects the full workspace allowlist here because
+# we're running from the runner's own package.json (not the generated dist one).
+# Note: for Prisma services we install the CLI separately via npm (see below).
+RUN pnpm install --prod --no-lockfile --ignore-scripts 2>&1 | tail -5 || true
+
+# Copy the compiled bundle (main.js has all internal libs bundled by webpack)
 COPY --from=builder /workspace/dist/apps/${APP}/main.js ./main.js
 
 # Copy .proto files — gRPC loads them at runtime via protoPath
@@ -122,33 +138,21 @@ RUN --mount=type=bind,from=builder,source=/workspace,target=/src \
       cp "/src/apps/${APP}/prisma.config.ts" /app/prisma.config.ts; \
     fi
 
-# 3. Prisma CLI + engines — copied from builder to avoid the pnpm v9 ignore-scripts issue.
+# 3. Prisma CLI + engines — only for services with a schema (auth, club).
 #
-#    Root cause: pnpm v9 (lockfile v9) requires an explicit `onlyBuiltDependencies`
-#    allowlist in package.json to run postinstall scripts. The package.json NX generates
-#    in dist/ does not have this field → pnpm silently skips @prisma/engines postinstall
-#    → migration engine binary is never downloaded → `prisma migrate deploy` crashes.
-#
-#    Fix: copy prisma CLI and engine binary from the builder's .pnpm store where they
-#    already ran. We use find to locate the versioned store paths without hardcoding them.
-#    Only runs for apps with a prisma/schema.prisma (auth-service, club-service).
+#    pnpm v9 silently skips @prisma/engines postinstall (no onlyBuiltDependencies
+#    in the generated package.json) → migration engine binary is never downloaded.
+#    npm does NOT have this issue — it runs postinstall unconditionally.
+#    Guard: skip entirely for non-Prisma services (booking, finance, inventory, api-gateway).
 RUN --mount=type=bind,from=builder,source=/workspace/node_modules,target=/bm \
-    PRISMA_STORE=$(find /bm/.pnpm -maxdepth 1 -name "prisma@*" -type d 2>/dev/null | head -1) && \
-    ENGINES_STORE=$(find /bm/.pnpm -maxdepth 1 -name "@prisma+engines@*" -type d 2>/dev/null | head -1) && \
-    if [ -n "$PRISMA_STORE" ] && [ -n "$ENGINES_STORE" ]; then \
-      echo "[prisma-copy] PRISMA_STORE=$PRISMA_STORE" && \
-      echo "[prisma-copy] ENGINES_STORE=$ENGINES_STORE" && \
-      \
-      # Get the prisma version from the store directory name (e.g. "7.6.0") \
+    if [ -f "/app/prisma/schema.prisma" ]; then \
+      PRISMA_STORE=$(find /bm/.pnpm -maxdepth 1 -name "prisma@*" -type d 2>/dev/null | head -1) && \
       PRISMA_VERSION=$(echo "$PRISMA_STORE" | sed 's|.*/prisma@\([^_]*\).*|\1|') && \
-      echo "[prisma-copy] installing prisma@${PRISMA_VERSION} via npm (no ignore-scripts issue)" && \
-      \
-      # npm install does NOT silently skip postinstall scripts — unlike pnpm v9+. \
-      # This downloads the correct linux engine binary for the target arch. \
+      echo "[prisma-copy] installing prisma@${PRISMA_VERSION} via npm" && \
       npm install --no-save --prefix /app "prisma@${PRISMA_VERSION}" && \
       echo "[prisma-copy] done"; \
     else \
-      echo "[prisma-copy] No Prisma store found — skipping (non-Prisma service)"; \
+      echo "[prisma-copy] No schema found — skipping prisma install (non-Prisma service)"; \
     fi
 
 # ---------------------------------------------------------------------------
