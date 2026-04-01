@@ -23,6 +23,7 @@ async function bootstrap(): Promise<void> {
       package: 'inventory',
       protoPath: join(protoDir, 'inventory.proto'),
       url: `0.0.0.0:${GRPC_PORTS.INVENTORY}`,
+      loader: { keepCase: true },
     },
   });
 

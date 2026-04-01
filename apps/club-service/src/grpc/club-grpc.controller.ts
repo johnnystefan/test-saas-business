@@ -16,8 +16,7 @@ import type {
   GrpcUpdateBusinessUnitRequest,
   GrpcUpdateMembershipRequest,
 } from '@saas/grpc';
-import type { BusinessUnit } from '../domain/business-unit/business-unit.entity';
-import type { Membership } from '../domain/membership/membership.entity';
+import type { BusinessUnitType, MemberStatus } from '@saas/shared-types';
 import { CreateBusinessUnitProvider } from '../business-unit/providers/create-business-unit.provider';
 import { ListBusinessUnitsProvider } from '../business-unit/providers/list-business-units.provider';
 import { UpdateBusinessUnitProvider } from '../business-unit/providers/update-business-unit.provider';
@@ -26,7 +25,12 @@ import { EnrollMemberProvider } from '../member/providers/enroll-member.provider
 import { ListMembersProvider } from '../member/providers/list-members.provider';
 import { ListMembershipsProvider } from '../member/providers/list-memberships.provider';
 import { UpdateMembershipProvider } from '../member/providers/update-membership.provider';
-import { mapBusinessUnit, mapMember, mapMembership } from './club-grpc.mapper';
+import {
+  mapBusinessUnit,
+  mapMember,
+  mapMembership,
+  mapMembershipWithMember,
+} from './club-grpc.mapper';
 
 @Controller()
 export class ClubGrpcController {
@@ -48,7 +52,7 @@ export class ClubGrpcController {
     const unit = await this.createBusinessUnitProvider.execute({
       tenantId: data.tenant_id,
       name: data.name,
-      type: data.type as BusinessUnit['type'],
+      type: data.type as BusinessUnitType,
     });
     return mapBusinessUnit(unit);
   }
@@ -120,7 +124,7 @@ export class ClubGrpcController {
       data.member_id,
       data.tenant_id,
     );
-    return { items: memberships.map(mapMembership) };
+    return { items: memberships.map(mapMembershipWithMember) };
   }
 
   @GrpcMethod('ClubService', 'UpdateMembership')
@@ -130,7 +134,7 @@ export class ClubGrpcController {
     const membership = await this.updateMembershipProvider.execute({
       id: data.id,
       tenantId: data.tenant_id,
-      status: data.status as Membership['status'],
+      status: data.status as MemberStatus,
     });
     return mapMembership(membership);
   }

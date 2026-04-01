@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { MemberStatusSchema, type MemberStatus } from '@saas/shared-types';
+import { MemberStatusSchema } from '@saas/shared-types';
+import type { MemberStatus } from '@saas/shared-types';
 import type { IMembershipRepository } from '../../domain/membership/i-membership.repository';
 import type {
   CreateMembershipData,
-  Membership,
   MembershipWithMember,
 } from '../../domain/membership/membership.entity';
+import { Membership } from '../../domain/membership/membership.entity';
 import { PrismaService } from './prisma.service';
 
 type PrismaMembershipRecord = {
@@ -76,7 +77,7 @@ export class PrismaMembershipRepository implements IMembershipRepository {
   }
 
   private toDomain(record: PrismaMembershipRecord): Membership {
-    return {
+    return Membership.fromPrimitives({
       id: record.id,
       tenantId: record.tenantId,
       memberId: record.memberId,
@@ -86,14 +87,15 @@ export class PrismaMembershipRepository implements IMembershipRepository {
       endDate: record.endDate,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
-    };
+    });
   }
 
   private toDomainWithMember(
     record: PrismaMembershipWithMember,
   ): MembershipWithMember {
+    const p = this.toDomain(record).toPrimitives();
     return {
-      ...this.toDomain(record),
+      ...p,
       memberName: record.member.name,
       memberEmail: record.member.email,
     };

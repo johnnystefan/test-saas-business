@@ -22,6 +22,7 @@ async function bootstrap(): Promise<void> {
       package: 'finance',
       protoPath: join(protoDir, 'finance.proto'),
       url: `0.0.0.0:${GRPC_PORTS.FINANCE}`,
+      loader: { keepCase: true },
     },
   });
 

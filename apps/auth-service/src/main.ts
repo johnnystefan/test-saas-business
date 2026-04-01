@@ -30,6 +30,7 @@ async function bootstrap(): Promise<void> {
       package: 'auth',
       protoPath: join(protoDir, 'auth.proto'),
       url: `0.0.0.0:${GRPC_PORTS.AUTH}`,
+      loader: { keepCase: true },
     },
   });
 

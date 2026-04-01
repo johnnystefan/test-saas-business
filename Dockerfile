@@ -18,18 +18,21 @@
 #   We use that file + pnpm install --prod to get a minimal node_modules for the runner.
 #   pnpm is used in the runner stage too, but only for prod deps (no devDeps).
 #
-# Why is .prisma/<client> at /app/.prisma/ and not node_modules?
-#   Webpack externalizes Prisma clients with relative requires:
-#     require(".prisma/auth-client")
-#   Node resolves ".prisma/..." relative to the requiring file's directory.
-#   Since main.js lives at /app/main.js, the client must be at /app/.prisma/.
+# Why is .prisma/<client> at /app/node_modules/.prisma/ and not /app/.prisma/?
+#   Webpack externalizes Prisma clients as bare module specifiers:
+#     require(".prisma/auth-client")   ← starts with "." but no "/"
+#   Node.js does NOT treat this as a relative path — it does module resolution,
+#   walking up looking for node_modules/.prisma/auth-client.
+#   Since main.js lives at /app/main.js, the client must be at
+#   /app/node_modules/.prisma/auth-client (node_modules resolution path).
 #
-# Why use npm (not pnpm) to install the Prisma CLI in the runner?
-#   pnpm v9+ requires an explicit `onlyBuiltDependencies` allowlist in package.json
-#   to run postinstall scripts. The dist/ package.json NX generates does not have
-#   this field → pnpm skips @prisma/engines postinstall → migration engine binary
-#   is never downloaded → `prisma migrate deploy` crashes at startup.
-#   npm does NOT have this issue.
+# Why use npm (not pnpm) to install the Prisma CLI + client in the runner?
+#   pnpm uses a virtual store (.pnpm/) with symlinks. Transitive dependencies like
+#   @prisma/client-runtime-utils are NOT hoisted to node_modules/@prisma/ — they live
+#   inside .pnpm/@prisma+client@x.x.x/node_modules/@prisma/. The generated Prisma
+#   client (.prisma/<name>-client/runtime/client.js) does require('@prisma/client-runtime-utils')
+#   which Node resolves upward from .prisma/, hitting node_modules/@prisma/ — but pnpm
+#   never puts it there. npm flattens everything into node_modules, so the require works.
 # =============================================================================
 
 ARG APP
@@ -102,10 +105,19 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # versions already — no lock file needed.
 COPY --from=builder /workspace/dist/apps/${APP}/package.json ./package.json
 
-# Install prod deps. pnpm respects the full workspace allowlist here because
-# we're running from the runner's own package.json (not the generated dist one).
-# Note: for Prisma services we install the CLI separately via npm (see below).
-RUN pnpm install --prod --no-lockfile --ignore-scripts 2>&1 | tail -5 || true
+# Allow pnpm to run @prisma/engines postinstall (downloads linux-musl binaries).
+# The NX-generated package.json lacks onlyBuiltDependencies so pnpm v9+ skips
+# postinstall scripts. We patch it in-place with python3 before installing.
+RUN if python3 -c "import json,sys; d=json.load(open('package.json')); \
+      deps=list(d.get('dependencies',{}).keys()); \
+      prisma_pkgs=[p for p in deps if 'prisma' in p.lower()]; \
+      d.setdefault('pnpm',{})['onlyBuiltDependencies']=prisma_pkgs or ['@prisma/engines']; \
+      json.dump(d,open('package.json','w'),indent=2)" 2>/dev/null; then \
+      echo "[pnpm] patched onlyBuiltDependencies"; \
+    fi
+
+# Install prod deps including postinstall scripts for @prisma/engines.
+RUN pnpm install --prod --no-lockfile 2>&1 | tail -5 || true
 
 # Copy the compiled bundle (main.js has all internal libs bundled by webpack)
 COPY --from=builder /workspace/dist/apps/${APP}/main.js ./main.js
@@ -119,13 +131,16 @@ COPY --from=builder /workspace/libs/grpc/protos ./libs/grpc/protos
 # ---------------------------------------------------------------------------
 
 # 1. Prisma generated client
-#    Webpack externalizes require(".prisma/auth-client") relative to main.js,
-#    so the client must live at /app/.prisma/<name>-client.
+#    Webpack externalizes require(".prisma/auth-client") as a bare module specifier.
+#    Node resolves bare specifiers (starting with "." but NOT "./") by walking up
+#    the directory tree looking for node_modules/.prisma/<name>-client.
+#    Since main.js lives at /app/main.js, the client must be in
+#    /app/node_modules/.prisma/<name>-client (node_modules resolution, NOT relative).
 RUN --mount=type=bind,from=builder,source=/workspace/node_modules/.prisma,target=/prisma-clients \
     CLIENT_NAME=$(echo "${APP}" | sed 's/-service$//') && \
     if [ -d "/prisma-clients/${CLIENT_NAME}-client" ]; then \
-      mkdir -p /app/.prisma && \
-      cp -r "/prisma-clients/${CLIENT_NAME}-client" "/app/.prisma/${CLIENT_NAME}-client"; \
+      mkdir -p /app/node_modules/.prisma && \
+      cp -r "/prisma-clients/${CLIENT_NAME}-client" "/app/node_modules/.prisma/${CLIENT_NAME}-client"; \
     fi
 
 # 2. Prisma migration files + config
@@ -138,21 +153,32 @@ RUN --mount=type=bind,from=builder,source=/workspace,target=/src \
       cp "/src/apps/${APP}/prisma.config.ts" /app/prisma.config.ts; \
     fi
 
-# 3. Prisma CLI + engines — only for services with a schema (auth, club).
+# 3. Prisma CLI + client runtime + engines — only for services with a schema (auth, club).
 #
-#    pnpm v9 silently skips @prisma/engines postinstall (no onlyBuiltDependencies
-#    in the generated package.json) → migration engine binary is never downloaded.
-#    npm does NOT have this issue — it runs postinstall unconditionally.
-#    Guard: skip entirely for non-Prisma services (booking, finance, inventory, api-gateway).
-RUN --mount=type=bind,from=builder,source=/workspace/node_modules,target=/bm \
-    if [ -f "/app/prisma/schema.prisma" ]; then \
-      PRISMA_STORE=$(find /bm/.pnpm -maxdepth 1 -name "prisma@*" -type d 2>/dev/null | head -1) && \
-      PRISMA_VERSION=$(echo "$PRISMA_STORE" | sed 's|.*/prisma@\([^_]*\).*|\1|') && \
-      echo "[prisma-copy] installing prisma@${PRISMA_VERSION} via npm" && \
-      npm install --no-save --prefix /app "prisma@${PRISMA_VERSION}" && \
-      echo "[prisma-copy] done"; \
+#    The NX-generated package.json does not include `prisma` (CLI) because webpack
+#    bundles it away or it is not directly imported.  We need the CLI for migrations.
+#    We also need @prisma/client because the generated .prisma/<name>-client/runtime/client.js
+#    requires '@prisma/client-runtime-utils', which ships inside @prisma/client.
+#
+#    Strategy: install prisma + @prisma/client + @prisma/engines in an isolated temp dir
+#    using pnpm (with onlyBuiltDependencies so @prisma/engines postinstall downloads
+#    linux-musl binaries).  Then copy the entire isolated node_modules into /app —
+#    pnpm symlinks remain valid because they are relative paths inside the same tree.
+RUN if [ -f "/app/prisma/schema.prisma" ]; then \
+      echo "[prisma] installing CLI + client via npm..." && \
+      mkdir -p /tmp/prisma-npm && \
+      cd /tmp/prisma-npm && \
+      npm install \
+        prisma@6.19.3 \
+        "@prisma/client@6.19.3" \
+        "@prisma/engines@6.19.3" \
+        --save-exact --omit=dev --no-package-lock 2>&1 | tail -5 && \
+      mkdir -p /app/node_modules && \
+      cp -r /tmp/prisma-npm/node_modules/. /app/node_modules/ && \
+      rm -rf /tmp/prisma-npm && \
+      echo "[prisma] done"; \
     else \
-      echo "[prisma-copy] No schema found — skipping prisma install (non-Prisma service)"; \
+      echo "[prisma] No schema found — skipping prisma install (non-Prisma service)"; \
     fi
 
 # ---------------------------------------------------------------------------

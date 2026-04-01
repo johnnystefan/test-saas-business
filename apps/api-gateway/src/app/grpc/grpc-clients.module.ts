@@ -33,6 +33,7 @@ const inventoryHost = process.env['GRPC_INVENTORY_HOST'] ?? 'localhost';
           package: 'auth',
           protoPath: join(protoDir, 'auth.proto'),
           url: `${authHost}:${GRPC_PORTS.AUTH}`,
+          loader: { keepCase: true },
         },
       },
       {
@@ -42,6 +43,7 @@ const inventoryHost = process.env['GRPC_INVENTORY_HOST'] ?? 'localhost';
           package: 'club',
           protoPath: join(protoDir, 'club.proto'),
           url: `${clubHost}:${GRPC_PORTS.CLUB}`,
+          loader: { keepCase: true },
         },
       },
       {
@@ -51,6 +53,7 @@ const inventoryHost = process.env['GRPC_INVENTORY_HOST'] ?? 'localhost';
           package: 'booking',
           protoPath: join(protoDir, 'booking.proto'),
           url: `${bookingHost}:${GRPC_PORTS.BOOKING}`,
+          loader: { keepCase: true },
         },
       },
       {
@@ -60,6 +63,7 @@ const inventoryHost = process.env['GRPC_INVENTORY_HOST'] ?? 'localhost';
           package: 'finance',
           protoPath: join(protoDir, 'finance.proto'),
           url: `${financeHost}:${GRPC_PORTS.FINANCE}`,
+          loader: { keepCase: true },
         },
       },
       {
@@ -69,6 +73,7 @@ const inventoryHost = process.env['GRPC_INVENTORY_HOST'] ?? 'localhost';
           package: 'inventory',
           protoPath: join(protoDir, 'inventory.proto'),
           url: `${inventoryHost}:${GRPC_PORTS.INVENTORY}`,
+          loader: { keepCase: true },
         },
       },
     ]),

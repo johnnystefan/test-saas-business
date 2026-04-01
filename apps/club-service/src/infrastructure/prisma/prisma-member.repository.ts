@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { MemberStatusSchema } from '@saas/shared-types';
 import type { IMemberRepository } from '../../domain/member/i-member.repository';
-import type {
-  CreateMemberData,
-  Member,
-} from '../../domain/member/member.entity';
+import type { CreateMemberData } from '../../domain/member/member.entity';
+import { Member } from '../../domain/member/member.entity';
 import { PrismaService } from './prisma.service';
 
 type PrismaMember = {
@@ -51,7 +49,7 @@ export class PrismaMemberRepository implements IMemberRepository {
   }
 
   private toDomain(record: PrismaMember): Member {
-    return {
+    return Member.fromPrimitives({
       id: record.id,
       tenantId: record.tenantId,
       name: record.name,
@@ -61,6 +59,6 @@ export class PrismaMemberRepository implements IMemberRepository {
       enrolledAt: record.enrolledAt,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
-    };
+    });
   }
 }

@@ -30,6 +30,7 @@ async function bootstrap(): Promise<void> {
       package: 'club',
       protoPath: join(protoDir, 'club.proto'),
       url: `0.0.0.0:${GRPC_PORTS.CLUB}`,
+      loader: { keepCase: true },
     },
   });
 

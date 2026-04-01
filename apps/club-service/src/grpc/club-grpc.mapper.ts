@@ -5,33 +5,53 @@ import type {
 } from '@saas/grpc';
 import type { BusinessUnit } from '../domain/business-unit/business-unit.entity';
 import type { Member } from '../domain/member/member.entity';
-import type { Membership } from '../domain/membership/membership.entity';
+import type {
+  Membership,
+  MembershipWithMember,
+} from '../domain/membership/membership.entity';
 
 export function mapBusinessUnit(unit: BusinessUnit): GrpcBusinessUnitResponse {
+  const p = unit.toPrimitives();
   return {
-    id: unit.id,
-    tenant_id: unit.tenantId,
-    name: unit.name,
-    type: unit.type,
-    is_active: unit.isActive,
-    created_at: unit.createdAt.toISOString(),
-    updated_at: unit.updatedAt.toISOString(),
+    id: p.id,
+    tenant_id: p.tenantId,
+    name: p.name,
+    type: p.type,
+    is_active: p.isActive,
+    created_at: p.createdAt.toISOString(),
+    updated_at: p.updatedAt.toISOString(),
   };
 }
 
 export function mapMember(member: Member): GrpcMemberResponse {
+  const p = member.toPrimitives();
   return {
-    id: member.id,
-    tenant_id: member.tenantId,
-    name: member.name,
-    email: member.email ?? '',
-    phone: member.phone ?? '',
-    status: member.status,
-    enrolled_at: member.enrolledAt.toISOString(),
+    id: p.id,
+    tenant_id: p.tenantId,
+    name: p.name,
+    email: p.email ?? '',
+    phone: p.phone ?? '',
+    status: p.status,
+    enrolled_at: p.enrolledAt.toISOString(),
   };
 }
 
 export function mapMembership(membership: Membership): GrpcMembershipResponse {
+  const p = membership.toPrimitives();
+  return {
+    id: p.id,
+    tenant_id: p.tenantId,
+    member_id: p.memberId,
+    business_unit_id: p.businessUnitId,
+    status: p.status,
+    start_date: p.startDate.toISOString(),
+    end_date: p.endDate?.toISOString() ?? '',
+  };
+}
+
+export function mapMembershipWithMember(
+  membership: MembershipWithMember,
+): GrpcMembershipResponse {
   return {
     id: membership.id,
     tenant_id: membership.tenantId,

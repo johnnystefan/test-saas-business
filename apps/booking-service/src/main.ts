@@ -22,6 +22,7 @@ async function bootstrap(): Promise<void> {
       package: 'booking',
       protoPath: join(protoDir, 'booking.proto'),
       url: `0.0.0.0:${GRPC_PORTS.BOOKING}`,
+      loader: { keepCase: true },
     },
   });
 
