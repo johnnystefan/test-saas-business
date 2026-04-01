@@ -23,8 +23,6 @@
 | `nestjs-domain`       | Entity, Value Object, pure Use Case, Repository interface (DDD)                                  | [SKILL.md](skills/nestjs-domain/SKILL.md)    |
 | `domain-errors`       | DomainError base class, error codes, exception filter mapping                                    | [SKILL.md](skills/domain-errors/SKILL.md)    |
 | `testing-patterns`    | Object Mothers, AAA pattern, coverage requirements, Given-When-Then                              | [SKILL.md](skills/testing-patterns/SKILL.md) |
-| `nx-monorepo`         | Workspace conventions, lib boundaries, generators                                                | [SKILL.md](skills/nx-monorepo/SKILL.md)      |
-| `prisma`              | Schema design, migrations, query patterns, relations                                             | [SKILL.md](skills/prisma/SKILL.md)           |
 | `zod-4`               | Schema validation, safeParse, createZodDto for NestJS, response validation                       | [SKILL.md](skills/zod-4/SKILL.md)            |
 | `zustand-5`           | Store slices, selectors, persist middleware, project naming conventions                          | [SKILL.md](skills/zustand-5/SKILL.md)        |
 | `vitest`              | Unit + integration tests for React components and hooks                                          | [SKILL.md](skills/vitest/SKILL.md)           |
@@ -33,6 +31,100 @@
 | `tdd`                 | Test-Driven Development: RED → GREEN → REFACTOR                                                  | [SKILL.md](skills/tdd/SKILL.md)              |
 | `skill-creator`       | Create new AI agent skills for this project                                                      | [SKILL.md](skills/skill-creator/SKILL.md)    |
 | `skill-sync`          | Sync skill metadata to AGENTS.md Auto-invoke tables                                              | [SKILL.md](skills/skill-sync/SKILL.md)       |
+
+### NX Workspace Skills
+
+| Skill                     | Description                                                                      | File                                                |
+| ------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `nx-generate`             | Scaffold apps/libs with NX generators; always invoke before creating any project | [SKILL.md](skills/nx-generate/SKILL.md)             |
+| `nx-workspace`            | Explore workspace, query projects/targets/deps, debug nx task failures           | [SKILL.md](skills/nx-workspace/SKILL.md)            |
+| `nx-run-tasks`            | Run build, test, lint, serve and any other NX targets                            | [SKILL.md](skills/nx-run-tasks/SKILL.md)            |
+| `nx-plugins`              | Discover and install NX plugins for new frameworks or technologies               | [SKILL.md](skills/nx-plugins/SKILL.md)              |
+| `nx-import`               | Import external repos or merge codebases into this NX monorepo                   | [SKILL.md](skills/nx-import/SKILL.md)               |
+| `monitor-ci`              | Monitor NX Cloud CI pipeline and apply self-healing fixes                        | [SKILL.md](skills/monitor-ci/SKILL.md)              |
+| `link-workspace-packages` | Link workspace packages when imports fail or new packages need wiring            | [SKILL.md](skills/link-workspace-packages/SKILL.md) |
+
+### Fundamentals Skills
+
+| Skill                   | Description                                                           | File                                                           |
+| ----------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `oop-pillars`           | Encapsulation, Abstraction, Inheritance, Polymorphism with examples   | [SKILL.md](skills/fundamentals/oop-pillars/SKILL.md)           |
+| `oop-design-principles` | DRY, KISS, YAGNI, Law of Demeter, Composition over Inheritance        | [SKILL.md](skills/fundamentals/oop-design-principles/SKILL.md) |
+| `solid-principles`      | Single Responsibility, Open/Closed, Liskov, Interface Segregation, DI | [SKILL.md](skills/fundamentals/solid-principles/SKILL.md)      |
+| `object-relationships`  | Association, Aggregation, Composition, Dependency relationships       | [SKILL.md](skills/fundamentals/object-relationships/SKILL.md)  |
+
+### Code Smells Skills
+
+| Skill                    | Description                                                         | File                                                      |
+| ------------------------ | ------------------------------------------------------------------- | --------------------------------------------------------- |
+| `code-smells-bloaters`   | Long Method, Large Class, Primitive Obsession, Long Parameter List  | [SKILL.md](skills/code-smells/bloaters/SKILL.md)          |
+| `code-smells-changers`   | Divergent Change, Shotgun Surgery, Parallel Inheritance Hierarchies | [SKILL.md](skills/code-smells/change-preventers/SKILL.md) |
+| `code-smells-couplers`   | Feature Envy, Inappropriate Intimacy, Message Chains, Middle Man    | [SKILL.md](skills/code-smells/couplers/SKILL.md)          |
+| `code-smells-dispens`    | Lazy Class, Speculative Generality, Dead Code, Duplicate Code       | [SKILL.md](skills/code-smells/dispensables/SKILL.md)      |
+| `code-smells-oo-abusers` | Switch Statements, Temporary Field, Refused Bequest, Alt. Classes   | [SKILL.md](skills/code-smells/oo-abusers/SKILL.md)        |
+
+### Refactoring Skills
+
+| Skill                         | Description                                                        | File                                                             |
+| ----------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| `refactoring-composing`       | Extract Method, Inline Method, Replace Temp with Query             | [SKILL.md](skills/refactoring/composing-methods/SKILL.md)        |
+| `refactoring-generalization`  | Pull Up / Push Down, Extract Interface, Collapse Hierarchy         | [SKILL.md](skills/refactoring/generalization/SKILL.md)           |
+| `refactoring-moving-features` | Move Method/Field, Extract Class, Hide Delegate                    | [SKILL.md](skills/refactoring/moving-features/SKILL.md)          |
+| `refactoring-organizing-data` | Replace Magic Number, Encapsulate Field, Replace Array with Object | [SKILL.md](skills/refactoring/organizing-data/SKILL.md)          |
+| `refactoring-conditionals`    | Decompose Conditional, Replace Conditional with Polymorphism       | [SKILL.md](skills/refactoring/simplifying-conditionals/SKILL.md) |
+| `refactoring-method-calls`    | Rename Method, Separate Query from Modifier, Parameterize Method   | [SKILL.md](skills/refactoring/simplifying-method-calls/SKILL.md) |
+| `refactoring-strategy`        | When and how to apply refactoring systematically                   | [SKILL.md](skills/refactoring/strategy/SKILL.md)                 |
+
+### Design Patterns — Behavioral
+
+| Skill                             | Description                                                               | File                                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `pattern-chain-of-responsibility` | Pass requests along a handler chain; each handler decides to process/pass | [SKILL.md](skills/design-patterns/behaviorals/pattern-chain-of-responsibility/SKILL.md) |
+| `pattern-command`                 | Encapsulate requests as objects for queuing, logging, undo/redo           | [SKILL.md](skills/design-patterns/behaviorals/pattern-command.md/SKILL.md)              |
+| `pattern-iterator`                | Sequential access to collection elements without exposing internals       | [SKILL.md](skills/design-patterns/behaviorals/pattern-iterator/SKILL.md)                |
+| `pattern-mediator`                | Reduce coupling by routing communication through a central mediator       | [SKILL.md](skills/design-patterns/behaviorals/pattern-mediator/SKILL.md)                |
+| `pattern-memento`                 | Capture and restore object state without breaking encapsulation           | [SKILL.md](skills/design-patterns/behaviorals/pattern-memento/SKILL.md)                 |
+| `pattern-observer`                | Subscription mechanism to notify observers about state changes            | [SKILL.md](skills/design-patterns/behaviorals/pattern-observer.md/SKILL.md)             |
+| `pattern-state`                   | Alter object behavior when its internal state changes                     | [SKILL.md](skills/design-patterns/behaviorals/pattern-state/SKILL.md)                   |
+| `pattern-strategy`                | Define interchangeable algorithm families, swap at runtime                | [SKILL.md](skills/design-patterns/behaviorals/pattern-strategy/SKILL.md)                |
+| `pattern-template-method`         | Define algorithm skeleton in superclass; subclasses override steps        | [SKILL.md](skills/design-patterns/behaviorals/pattern-template-method.md/SKILL.md)      |
+| `pattern-visitor`                 | Add operations to stable class hierarchies without modifying them         | [SKILL.md](skills/design-patterns/behaviorals/pattern-visitor/SKILL.md)                 |
+
+### Design Patterns — Creational
+
+| Skill                      | Description                                                             | File                                                                      |
+| -------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `pattern-abstract-factory` | Produce families of compatible related objects without concrete classes | [SKILL.md](skills/design-patterns/creationals/abstract-factory/SKILL.md)  |
+| `pattern-factory-method`   | Decouple object creation; subclasses decide which class to instantiate  | [SKILL.md](skills/design-patterns/creationals/factory-method/SKILL.md)    |
+| `pattern-builder`          | Construct complex objects step by step with a fluent interface          | [SKILL.md](skills/design-patterns/creationals/pattern-builder/SKILL.md)   |
+| `pattern-prototype`        | Clone existing objects without depending on their concrete classes      | [SKILL.md](skills/design-patterns/creationals/pattern-prototype/SKILL.md) |
+| `pattern-singleton`        | Ensure a class has only one instance with a global access point         | [SKILL.md](skills/design-patterns/creationals/pattern-singleton/SKILL.md) |
+
+### Design Patterns — Structural
+
+| Skill               | Description                                                        | File                                                                      |
+| ------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| `pattern-adapter`   | Wrap incompatible interfaces so objects can collaborate            | [SKILL.md](skills/design-patterns/structurals/pattern-adapter/SKILL.md)   |
+| `pattern-bridge`    | Split abstraction and implementation into independent hierarchies  | [SKILL.md](skills/design-patterns/structurals/pattern-bridge/SKILL.md)    |
+| `pattern-composite` | Compose objects into tree structures for part-whole hierarchies    | [SKILL.md](skills/design-patterns/structurals/pattern-composite/SKILL.md) |
+| `pattern-decorator` | Add behaviors to objects dynamically via wrapper objects           | [SKILL.md](skills/design-patterns/structurals/pattern-decorator/SKILL.md) |
+| `pattern-facade`    | Provide a simplified interface to a complex subsystem              | [SKILL.md](skills/design-patterns/structurals/pattern-facade/SKILL.md)    |
+| `pattern-flyweight` | Share common state to minimize memory usage across many objects    | [SKILL.md](skills/design-patterns/structurals/pattern-flyweight/SKILL.md) |
+| `pattern-proxy`     | Control object access with lazy loading, caching, or access guards | [SKILL.md](skills/design-patterns/structurals/pattern-proxy/SKILL.md)     |
+
+### Documentation Skills
+
+| Skill                      | Description                                               | File                                                               |
+| -------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| `uml-documentation`        | Class, Component, Sequence, Use Case, Deployment diagrams | [SKILL.md](skills/documentation/uml-documentation/SKILL.md)        |
+| `uml-interaction-diagrams` | Sequence, Collaboration, Timing, Interaction Overview     | [SKILL.md](skills/documentation/uml-interaction-diagrams/SKILL.md) |
+
+### Technical Quality Skills
+
+| Skill                       | Description                                                             | File                                                  |
+| --------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `technical-debt-management` | Identify, categorize, track, and systematically pay down technical debt | [SKILL.md](skills/technical-debt-management/SKILL.md) |
+| `imcomplete-library-class`  | Extend third-party libraries safely without modifying their source      | [SKILL.md](skills/imcomplete-library-class/SKILL.md)  |
 
 ### Project-Specific Skills
 
@@ -53,31 +145,80 @@
 
 When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
-| Action                                               | Skill                 |
-| ---------------------------------------------------- | --------------------- |
-| After creating/modifying a skill                     | `skill-sync`          |
-| Creating new skills                                  | `skill-creator`       |
-| Creating Zod schemas or validators                   | `zod-4`               |
-| Creating or modifying Zustand stores                 | `zustand-5`           |
-| Creating NestJS modules, guards, interceptors, pipes | `nestjs`              |
-| Creating NX libs, apps, or generators                | `nx-monorepo`         |
-| Creating Prisma models or migrations                 | `prisma`              |
-| Writing React components or hooks                    | `react-19`            |
-| Writing TypeScript types/interfaces                  | `typescript`          |
-| Writing unit or integration tests (React/frontend)   | `vitest`              |
-| Writing unit or integration tests (NestJS/backend)   | `polyglot-test-agent` |
-| Writing E2E tests                                    | `playwright`          |
-| Implementing a feature or fixing a bug               | `tdd`                 |
-| Refactoring code                                     | `tdd`                 |
-| Working on admin dashboard                           | `saas-admin`          |
-| Working on customer app or mobile                    | `saas-customer-app`   |
-| Working on auth (JWT, RBAC, guards)                  | `saas-auth`           |
-| Working on payments or Stripe                        | `saas-payments`       |
-| Working on WebSockets or real-time                   | `saas-realtime`       |
-| Working on API Gateway / BFF                         | `saas-api-gateway`    |
-| Working on domain models or business rules           | `saas-domain`         |
-| Defining monorepo structure or NX boundaries         | `saas-architecture`   |
-| Regenerate AGENTS.md Auto-invoke tables              | `skill-sync`          |
+| Action                                               | Skill                             |
+| ---------------------------------------------------- | --------------------------------- |
+| After creating/modifying a skill                     | `skill-sync`                      |
+| Creating new skills                                  | `skill-creator`                   |
+| Creating Zod schemas or validators                   | `zod-4`                           |
+| Creating or modifying Zustand stores                 | `zustand-5`                       |
+| Creating NestJS modules, guards, interceptors, pipes | `nestjs`                          |
+| Creating NX libs, apps, or generators                | `nx-generate`                     |
+| Creating Prisma models or migrations                 | `prisma`                          |
+| Writing React components or hooks                    | `react-19`                        |
+| Writing TypeScript types/interfaces                  | `typescript`                      |
+| Writing unit or integration tests (React/frontend)   | `vitest`                          |
+| Writing unit or integration tests (NestJS/backend)   | `polyglot-test-agent`             |
+| Writing E2E tests                                    | `playwright`                      |
+| Implementing a feature or fixing a bug               | `tdd`                             |
+| Refactoring code                                     | `tdd`                             |
+| Working on admin dashboard                           | `saas-admin`                      |
+| Working on customer app or mobile                    | `saas-customer-app`               |
+| Working on auth (JWT, RBAC, guards)                  | `saas-auth`                       |
+| Working on payments or Stripe                        | `saas-payments`                   |
+| Working on WebSockets or real-time                   | `saas-realtime`                   |
+| Working on API Gateway / BFF                         | `saas-api-gateway`                |
+| Working on domain models or business rules           | `saas-domain`                     |
+| Defining monorepo structure or NX boundaries         | `saas-architecture`               |
+| Regenerate AGENTS.md Auto-invoke tables              | `skill-sync`                      |
+| Scaffolding NX apps, libs, or project structure      | `nx-generate`                     |
+| Exploring workspace, projects, targets, or deps      | `nx-workspace`                    |
+| Running NX build, test, lint, serve tasks            | `nx-run-tasks`                    |
+| Discovering or installing NX plugins                 | `nx-plugins`                      |
+| Importing external repos into this monorepo          | `nx-import`                       |
+| Monitoring CI pipeline or self-healing fixes         | `monitor-ci`                      |
+| Workspace package import errors (TS2307, etc.)       | `link-workspace-packages`         |
+| Explaining or applying SOLID principles              | `solid-principles`                |
+| Explaining OOP pillars (encapsulation, inheritance…) | `oop-pillars`                     |
+| Explaining OOP design principles (DRY, KISS, YAGNI…) | `oop-design-principles`           |
+| Explaining object relationships                      | `object-relationships`            |
+| Detecting or explaining code smells — bloaters       | `code-smells-bloaters`            |
+| Detecting or explaining code smells — change prevs   | `code-smells-changers`            |
+| Detecting or explaining code smells — coupling       | `code-smells-couplers`            |
+| Detecting or explaining code smells — dispensables   | `code-smells-dispens`             |
+| Detecting or explaining code smells — OO abusers     | `code-smells-oo-abusers`          |
+| Applying refactoring — method composition            | `refactoring-composing`           |
+| Applying refactoring — generalization / hierarchy    | `refactoring-generalization`      |
+| Applying refactoring — moving features               | `refactoring-moving-features`     |
+| Applying refactoring — data organization             | `refactoring-organizing-data`     |
+| Applying refactoring — simplifying conditionals      | `refactoring-conditionals`        |
+| Applying refactoring — simplifying method calls      | `refactoring-method-calls`        |
+| Deciding when / how to refactor systematically       | `refactoring-strategy`            |
+| Implementing Chain of Responsibility pattern         | `pattern-chain-of-responsibility` |
+| Implementing Command pattern                         | `pattern-command`                 |
+| Implementing Iterator pattern                        | `pattern-iterator`                |
+| Implementing Mediator pattern                        | `pattern-mediator`                |
+| Implementing Memento / undo-redo pattern             | `pattern-memento`                 |
+| Implementing Observer / pub-sub pattern              | `pattern-observer`                |
+| Implementing State / FSM pattern                     | `pattern-state`                   |
+| Implementing Strategy pattern                        | `pattern-strategy`                |
+| Implementing Template Method pattern                 | `pattern-template-method`         |
+| Implementing Visitor pattern                         | `pattern-visitor`                 |
+| Implementing Abstract Factory pattern                | `pattern-abstract-factory`        |
+| Implementing Factory Method pattern                  | `pattern-factory-method`          |
+| Implementing Builder pattern                         | `pattern-builder`                 |
+| Implementing Prototype / clone pattern               | `pattern-prototype`               |
+| Implementing Singleton pattern                       | `pattern-singleton`               |
+| Implementing Adapter pattern                         | `pattern-adapter`                 |
+| Implementing Bridge pattern                          | `pattern-bridge`                  |
+| Implementing Composite / tree pattern                | `pattern-composite`               |
+| Implementing Decorator pattern                       | `pattern-decorator`               |
+| Implementing Facade pattern                          | `pattern-facade`                  |
+| Implementing Flyweight pattern                       | `pattern-flyweight`               |
+| Implementing Proxy pattern                           | `pattern-proxy`                   |
+| Writing UML diagrams (class, component, sequence…)   | `uml-documentation`               |
+| Writing UML interaction / sequence diagrams          | `uml-interaction-diagrams`        |
+| Managing or paying down technical debt               | `technical-debt-management`       |
+| Extending third-party libraries safely               | `imcomplete-library-class`        |
 
 ---
 

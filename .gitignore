@@ -33,3 +33,13 @@ Thumbs.db
 .claude/worktrees
 .claude/settings.local.json
 vite.config.*.timestamp*
+
+# OpenCode — local runtime files (do not commit)
+# agents/ and commands/ ARE committed (project config)
+# skills/ is a local symlink created by skills/setup.sh
+.opencode/skills
+.opencode/.git
+.opencode/node_modules
+.opencode/package.json
+.opencode/bun.lock
+.opencode/.gitignore

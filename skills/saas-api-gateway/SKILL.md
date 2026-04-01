@@ -1,3 +1,17 @@
+---
+name: saas-api-gateway
+description: >
+  BFF API Gateway patterns for this SaaS platform — routing, aggregation, and forwarding to microservices.
+  Trigger: When working on the API Gateway, implementing BFF routes, aggregating microservice responses, or handling cross-cutting concerns.
+license: Apache-2.0
+metadata:
+  author: gentleman-programming
+  version: '1.0'
+  scope: [api-gateway]
+  auto_invoke: 'Working on API Gateway / BFF routing or aggregation'
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
+---
+
 # saas-api-gateway — BFF API Gateway Pattern
 
 ## What is the BFF?
