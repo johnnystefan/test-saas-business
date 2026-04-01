@@ -7,8 +7,7 @@
 
 These checks run first and are **deterministic** (not AI). They block before GGA even runs:
 
-1. **No direct commits to `main`/`master`** — use a feature branch + PR
-2. **TruffleHog secret scan** — detects verified secrets (tokens that respond to real API calls)
+1. **TruffleHog secret scan** — detects verified secrets (tokens that respond to real API calls)
 
 ---
 
