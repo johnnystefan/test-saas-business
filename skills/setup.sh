@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup AI Skills for Prowler development
+# Setup AI Skills for SaaS Business Platform development
 # Configures AI coding assistants that follow agentskills.io standard:
 #   - Claude Code: .claude/skills/ symlink + CLAUDE.md copies
 #   - Gemini CLI: .gemini/skills/ symlink + GEMINI.md copies
@@ -67,7 +67,7 @@ setup_opencode() {
 show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
-    echo "Configure AI coding assistants for Prowler development."
+    echo "Configure AI coding assistants for SaaS Business Platform development."
     echo ""
     echo "Options:"
     echo "  --all       Configure all AI assistants"
@@ -265,8 +265,8 @@ done
 # MAIN
 # =============================================================================
 
-echo "🤖 Prowler AI Skills Setup"
-echo "=========================="
+echo "🤖 SaaS Business Platform AI Skills Setup"
+echo "=========================================="
 echo ""
 
 # Count skills
