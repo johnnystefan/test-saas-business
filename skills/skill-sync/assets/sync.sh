@@ -202,7 +202,7 @@ while IFS= read -r skill_file; do
         # Append to scope's skill file
         echo "$skill_name:$auto_invoke" >> "$SCOPE_TMPDIR/$scope"
     done
-done < <(find "$SKILLS_DIR" -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort)
+done < <(find "$SKILLS_DIR" -mindepth 2 -name SKILL.md -print | sort)
 
 # Generate Auto-invoke section for each scope
 # Deterministic scope order (stable diffs)
@@ -322,7 +322,7 @@ while IFS= read -r skill_file; do
         echo -e "  ${YELLOW}$skill_name${NC} - missing: ${scope_raw:+}${scope_raw:-scope} ${auto_invoke:+}${auto_invoke:-auto_invoke}"
         missing=$((missing + 1))
     fi
-done < <(find "$SKILLS_DIR" -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort)
+done < <(find "$SKILLS_DIR" -mindepth 2 -name SKILL.md -print | sort)
 
 if [ $missing -eq 0 ]; then
     echo -e "  ${GREEN}All skills have sync metadata${NC}"

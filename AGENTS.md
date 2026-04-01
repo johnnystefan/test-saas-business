@@ -145,80 +145,60 @@
 
 When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
-| Action                                               | Skill                             |
-| ---------------------------------------------------- | --------------------------------- |
-| After creating/modifying a skill                     | `skill-sync`                      |
-| Creating new skills                                  | `skill-creator`                   |
-| Creating Zod schemas or validators                   | `zod-4`                           |
-| Creating or modifying Zustand stores                 | `zustand-5`                       |
-| Creating NestJS modules, guards, interceptors, pipes | `nestjs`                          |
-| Creating NX libs, apps, or generators                | `nx-generate`                     |
-| Creating Prisma models or migrations                 | `prisma`                          |
-| Writing React components or hooks                    | `react-19`                        |
-| Writing TypeScript types/interfaces                  | `typescript`                      |
-| Writing unit or integration tests (React/frontend)   | `vitest`                          |
-| Writing unit or integration tests (NestJS/backend)   | `polyglot-test-agent`             |
-| Writing E2E tests                                    | `playwright`                      |
-| Implementing a feature or fixing a bug               | `tdd`                             |
-| Refactoring code                                     | `tdd`                             |
-| Working on admin dashboard                           | `saas-admin`                      |
-| Working on customer app or mobile                    | `saas-customer-app`               |
-| Working on auth (JWT, RBAC, guards)                  | `saas-auth`                       |
-| Working on payments or Stripe                        | `saas-payments`                   |
-| Working on WebSockets or real-time                   | `saas-realtime`                   |
-| Working on API Gateway / BFF                         | `saas-api-gateway`                |
-| Working on domain models or business rules           | `saas-domain`                     |
-| Defining monorepo structure or NX boundaries         | `saas-architecture`               |
-| Regenerate AGENTS.md Auto-invoke tables              | `skill-sync`                      |
-| Scaffolding NX apps, libs, or project structure      | `nx-generate`                     |
-| Exploring workspace, projects, targets, or deps      | `nx-workspace`                    |
-| Running NX build, test, lint, serve tasks            | `nx-run-tasks`                    |
-| Discovering or installing NX plugins                 | `nx-plugins`                      |
-| Importing external repos into this monorepo          | `nx-import`                       |
-| Monitoring CI pipeline or self-healing fixes         | `monitor-ci`                      |
-| Workspace package import errors (TS2307, etc.)       | `link-workspace-packages`         |
-| Explaining or applying SOLID principles              | `solid-principles`                |
-| Explaining OOP pillars (encapsulation, inheritance…) | `oop-pillars`                     |
-| Explaining OOP design principles (DRY, KISS, YAGNI…) | `oop-design-principles`           |
-| Explaining object relationships                      | `object-relationships`            |
-| Detecting or explaining code smells — bloaters       | `code-smells-bloaters`            |
-| Detecting or explaining code smells — change prevs   | `code-smells-changers`            |
-| Detecting or explaining code smells — coupling       | `code-smells-couplers`            |
-| Detecting or explaining code smells — dispensables   | `code-smells-dispens`             |
-| Detecting or explaining code smells — OO abusers     | `code-smells-oo-abusers`          |
-| Applying refactoring — method composition            | `refactoring-composing`           |
-| Applying refactoring — generalization / hierarchy    | `refactoring-generalization`      |
-| Applying refactoring — moving features               | `refactoring-moving-features`     |
-| Applying refactoring — data organization             | `refactoring-organizing-data`     |
-| Applying refactoring — simplifying conditionals      | `refactoring-conditionals`        |
-| Applying refactoring — simplifying method calls      | `refactoring-method-calls`        |
-| Deciding when / how to refactor systematically       | `refactoring-strategy`            |
-| Implementing Chain of Responsibility pattern         | `pattern-chain-of-responsibility` |
-| Implementing Command pattern                         | `pattern-command`                 |
-| Implementing Iterator pattern                        | `pattern-iterator`                |
-| Implementing Mediator pattern                        | `pattern-mediator`                |
-| Implementing Memento / undo-redo pattern             | `pattern-memento`                 |
-| Implementing Observer / pub-sub pattern              | `pattern-observer`                |
-| Implementing State / FSM pattern                     | `pattern-state`                   |
-| Implementing Strategy pattern                        | `pattern-strategy`                |
-| Implementing Template Method pattern                 | `pattern-template-method`         |
-| Implementing Visitor pattern                         | `pattern-visitor`                 |
-| Implementing Abstract Factory pattern                | `pattern-abstract-factory`        |
-| Implementing Factory Method pattern                  | `pattern-factory-method`          |
-| Implementing Builder pattern                         | `pattern-builder`                 |
-| Implementing Prototype / clone pattern               | `pattern-prototype`               |
-| Implementing Singleton pattern                       | `pattern-singleton`               |
-| Implementing Adapter pattern                         | `pattern-adapter`                 |
-| Implementing Bridge pattern                          | `pattern-bridge`                  |
-| Implementing Composite / tree pattern                | `pattern-composite`               |
-| Implementing Decorator pattern                       | `pattern-decorator`               |
-| Implementing Facade pattern                          | `pattern-facade`                  |
-| Implementing Flyweight pattern                       | `pattern-flyweight`               |
-| Implementing Proxy pattern                           | `pattern-proxy`                   |
-| Writing UML diagrams (class, component, sequence…)   | `uml-documentation`               |
-| Writing UML interaction / sequence diagrams          | `uml-interaction-diagrams`        |
-| Managing or paying down technical debt               | `technical-debt-management`       |
-| Extending third-party libraries safely               | `imcomplete-library-class`        |
+| Action | Skill |
+|--------|-------|
+| After creating/modifying a skill | `skill-sync` |
+| Creating new skills | `skill-creator` |
+| Designing class relationships or reviewing object lifecycle ownership | `fundamentals/object-relationships` |
+| Designing extensible architecture or evaluating inheritance vs composition | `fundamentals/oop-design-principles` |
+| Documenting architecture or class relationships with UML | `documentation/uml-documentation` |
+| Documenting behavioral patterns or service interactions with sequence diagrams | `documentation/uml-interaction-diagrams` |
+| Evaluating OOP design or replacing switch logic with polymorphism | `fundamentals/oop-pillars` |
+| Extending third-party or read-only library classes | `imcomplete-library-class` |
+| Fixing bug | `tdd` |
+| Identifying or communicating technical debt and refactoring cost | `technical-debt-management` |
+| Implementing feature | `tdd` |
+| Modifying component | `tdd` |
+| Moving methods or fields between classes to improve cohesion | `refactoring/moving-features` |
+| Planning a refactoring session or evaluating technical debt priority | `refactoring/strategy` |
+| Refactoring class hierarchies or managing inheritance structures | `refactoring/generalization` |
+| Refactoring code | `tdd` |
+| Refactoring data structures or replacing primitives with domain objects | `refactoring/organizing-data` |
+| Refactoring long methods or extracting variables and sub-methods | `refactoring/composing-methods` |
+| Refactoring method signatures or separating queries from modifiers | `refactoring/simplifying-method-calls` |
+| Refactoring nested conditionals or replacing type-based branching with polymorphism | `refactoring/simplifying-conditionals` |
+| Regenerate AGENTS.md Auto-invoke tables | `skill-sync` |
+| Reviewing OOP design and polymorphism usage | `code-smells/oo-abusers` |
+| Reviewing architectural coupling and change patterns | `code-smells/change-preventers` |
+| Reviewing code for size and complexity issues | `code-smells/bloaters` |
+| Reviewing code for unnecessary elements and duplication | `code-smells/dispensables` |
+| Reviewing coupling and class communication patterns | `code-smells/couplers` |
+| Reviewing or applying SOLID principles to architecture or class design | `fundamentals/solid-principles` |
+| Troubleshoot why a skill is missing from AGENTS.md auto-invoke | `skill-sync` |
+| Working on task | `tdd` |
+| Writing unit or integration tests (NestJS/backend) | `polyglot-test-agent` |
+| abstract factory pattern, product families, object creation | `pattern-abstract-factory` |
+| adapter pattern, interface wrapper, legacy integration | `pattern-adapter` |
+| bridge pattern, abstraction implementation split, platform independence | `pattern-bridge` |
+| builder pattern, fluent builder, step by step construction | `pattern-builder` |
+| chain of responsibility pattern, handler chain, middleware pipeline | `pattern-chain-of-responsibility` |
+| command pattern, undo redo, action queue, request encapsulation | `pattern-command` |
+| composite pattern, tree structure, part-whole hierarchy | `pattern-composite` |
+| decorator pattern, dynamic behavior, wrapper object | `pattern-decorator` |
+| facade pattern, simplified interface, subsystem abstraction | `pattern-facade` |
+| factory method pattern, object creation, subclass instantiation | `pattern-factory-method` |
+| flyweight pattern, shared state, memory optimization | `pattern-flyweight` |
+| iterator pattern, collection traversal, custom iterator | `pattern-iterator` |
+| mediator pattern, event bus, component decoupling | `pattern-mediator` |
+| memento pattern, state snapshot, undo history | `pattern-memento` |
+| observer pattern, pub sub, event driven, reactive updates | `pattern-observer` |
+| prototype pattern, object cloning, copy constructor | `pattern-prototype` |
+| proxy pattern, access control, lazy loading, virtual proxy | `pattern-proxy` |
+| singleton pattern, single instance, global access point | `pattern-singleton` |
+| state pattern, finite state machine, workflow states | `pattern-state` |
+| strategy pattern, interchangeable algorithms, runtime behavior swap | `pattern-strategy` |
+| template method pattern, algorithm skeleton, hook methods | `pattern-template-method` |
+| visitor pattern, double dispatch, object structure operations | `pattern-visitor` |
 
 ---
 
