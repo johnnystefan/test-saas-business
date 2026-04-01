@@ -31,7 +31,7 @@ describe('RegisterMemberUseCase', () => {
 
     // Assert
     expect(actualResult).toBeDefined();
-    expect(actualResult.name).toBe('John Doe');
+    expect(actualResult.name.value).toBe('John Doe');
     expect(mockRepository.findByEmail).toHaveBeenCalledWith(
       'john@example.com',
       'tenant-1',

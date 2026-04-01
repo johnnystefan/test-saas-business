@@ -30,7 +30,7 @@ describe('UpdateMembershipUseCase', () => {
     const actualResult = await useCase.execute(inputData);
 
     // Assert
-    expect(actualResult.status).toBe('SUSPENDED');
+    expect(actualResult.status.value).toBe('SUSPENDED');
     expect(mockRepository.updateStatus).toHaveBeenCalledWith(
       'membership-1',
       'tenant-1',

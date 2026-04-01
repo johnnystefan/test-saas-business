@@ -59,8 +59,12 @@ describe('EnrollMemberUseCase', () => {
 
     // Assert
     expect(actualResult).toBeDefined();
-    expect(actualResult.memberId).toBe('member-1');
-    expect(actualResult.businessUnitId).toBe('unit-1');
+    expect(actualResult.memberId.value).toBe(
+      'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    );
+    expect(actualResult.businessUnitId.value).toBe(
+      'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    );
     expect(mockMemberRepository.findById).toHaveBeenCalledWith(
       'member-1',
       'tenant-1',

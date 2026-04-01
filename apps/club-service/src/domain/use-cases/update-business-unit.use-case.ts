@@ -30,10 +30,10 @@ export class UpdateBusinessUnitUseCase {
   }
 
   private async updatedBusinessUnit(
-    id: string,
+    id: BusinessUnit['id'],
     tenantId: string,
     data: UpdateBusinessUnitData,
   ): Promise<BusinessUnit> {
-    return this.repository.update(id, tenantId, data);
+    return this.repository.update(id.value, tenantId, data);
   }
 }

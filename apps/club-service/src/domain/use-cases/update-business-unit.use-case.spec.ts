@@ -34,11 +34,13 @@ describe('UpdateBusinessUnitUseCase', () => {
     const actualResult = await useCase.execute(inputData);
 
     // Assert
-    expect(actualResult.name).toBe('Updated Academy');
+    expect(actualResult.name.value).toBe('Updated Academy');
     expect(mockRepository.findById).toHaveBeenCalledWith('unit-1', 'tenant-1');
-    expect(mockRepository.update).toHaveBeenCalledWith('unit-1', 'tenant-1', {
-      name: 'Updated Academy',
-    });
+    expect(mockRepository.update).toHaveBeenCalledWith(
+      'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      'tenant-1',
+      { name: 'Updated Academy' },
+    );
   });
 
   it('should throw BUSINESS_UNIT_NOT_FOUND when unit does not exist', async () => {

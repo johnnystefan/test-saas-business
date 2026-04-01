@@ -30,7 +30,7 @@ describe('CreateBusinessUnitUseCase', () => {
 
     // Assert
     expect(actualResult).toBeDefined();
-    expect(actualResult.name).toBe('Baseball Academy');
+    expect(actualResult.name.value).toBe('Baseball Academy');
     expect(mockRepository.create).toHaveBeenCalledWith(inputData);
   });
 });

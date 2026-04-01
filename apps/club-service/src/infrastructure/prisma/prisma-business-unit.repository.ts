@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import {
-  BusinessUnitTypeSchema,
-  ResourceNotFoundError,
-} from '@saas/shared-types';
+import { ResourceNotFoundError } from '@saas/shared-types';
 import type { IBusinessUnitRepository } from '../../domain/business-unit/i-business-unit.repository';
+import { BusinessUnit } from '../../domain/business-unit/business-unit.entity';
 import type {
-  BusinessUnit,
   CreateBusinessUnitData,
   UpdateBusinessUnitData,
 } from '../../domain/business-unit/business-unit.entity';
@@ -64,14 +61,14 @@ export class PrismaBusinessUnitRepository implements IBusinessUnitRepository {
   }
 
   private toDomain(record: PrismaBusinessUnit): BusinessUnit {
-    return {
+    return BusinessUnit.fromPrimitives({
       id: record.id,
       tenantId: record.tenantId,
       name: record.name,
-      type: BusinessUnitTypeSchema.parse(record.type),
+      type: record.type as BusinessUnit['type']['value'],
       isActive: record.isActive,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
-    };
+    });
   }
 }
