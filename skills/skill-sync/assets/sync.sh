@@ -53,6 +53,7 @@ get_agents_path() {
         admin)             echo "$REPO_ROOT/apps/admin/AGENTS.md" ;;
         customer)          echo "$REPO_ROOT/apps/customer/AGENTS.md" ;;
         api-gateway)       echo "$REPO_ROOT/apps/api-gateway/AGENTS.md" ;;
+        admin-gateway)     echo "$REPO_ROOT/apps/admin-gateway/AGENTS.md" ;;
         auth-service)      echo "$REPO_ROOT/apps/auth-service/AGENTS.md" ;;
         club-service)      echo "$REPO_ROOT/apps/club-service/AGENTS.md" ;;
         inventory-service) echo "$REPO_ROOT/apps/inventory-service/AGENTS.md" ;;

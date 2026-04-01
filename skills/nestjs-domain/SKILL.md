@@ -7,15 +7,7 @@ license: Apache-2.0
 metadata:
   author: gentleman-programming
   version: '1.0'
-  scope:
-    [
-      auth-service,
-      club-service,
-      inventory-service,
-      booking-service,
-      finance-service,
-      libs,
-    ]
+  scope: [auth-service, club-service, inventory-service, booking-service, finance-service, libs]
   auto_invoke: 'Working on domain models or business rules'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---

@@ -7,18 +7,7 @@ license: Apache-2.0
 metadata:
   author: gentleman-programming
   version: '1.0'
-  scope:
-    [
-      admin,
-      customer,
-      api-gateway,
-      auth-service,
-      club-service,
-      inventory-service,
-      booking-service,
-      finance-service,
-      libs,
-    ]
+  scope: [admin, customer, api-gateway, auth-service, club-service, inventory-service, booking-service, finance-service, libs]
   auto_invoke: 'Writing unit or integration tests (React/frontend)'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---

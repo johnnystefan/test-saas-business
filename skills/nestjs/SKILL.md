@@ -7,16 +7,7 @@ license: Apache-2.0
 metadata:
   author: gentleman-programming
   version: '1.0'
-  scope:
-    [
-      api-gateway,
-      admin-gateway,
-      auth-service,
-      club-service,
-      inventory-service,
-      booking-service,
-      finance-service,
-    ]
+  scope: [api-gateway, admin-gateway, auth-service, club-service, inventory-service, booking-service, finance-service]
   auto_invoke: 'Creating NestJS modules, guards, interceptors, pipes'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---

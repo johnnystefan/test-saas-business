@@ -148,6 +148,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Action | Skill |
 |--------|-------|
 | After creating/modifying a skill | `skill-sync` |
+| Creating Zod schemas or validators | `zod-4` |
 | Creating new skills | `skill-creator` |
 | Designing class relationships or reviewing object lifecycle ownership | `fundamentals/object-relationships` |
 | Designing extensible architecture or evaluating inheritance vs composition | `fundamentals/oop-design-principles` |
@@ -159,6 +160,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Identifying or communicating technical debt and refactoring cost | `technical-debt-management` |
 | Implementing feature | `tdd` |
 | Modifying component | `tdd` |
+| Monitoring CI pipeline or self-healing fixes | `monitor-ci` |
 | Moving methods or fields between classes to improve cohesion | `refactoring/moving-features` |
 | Planning a refactoring session or evaluating technical debt priority | `refactoring/strategy` |
 | Refactoring class hierarchies or managing inheritance structures | `refactoring/generalization` |
@@ -176,6 +178,8 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Reviewing or applying SOLID principles to architecture or class design | `fundamentals/solid-principles` |
 | Troubleshoot why a skill is missing from AGENTS.md auto-invoke | `skill-sync` |
 | Working on task | `tdd` |
+| Workspace package import errors or cannot find module (@org/*) | `link-workspace-packages` |
+| Writing TypeScript types/interfaces | `typescript` |
 | Writing unit or integration tests (NestJS/backend) | `polyglot-test-agent` |
 | abstract factory pattern, product families, object creation | `pattern-abstract-factory` |
 | adapter pattern, interface wrapper, legacy integration | `pattern-adapter` |

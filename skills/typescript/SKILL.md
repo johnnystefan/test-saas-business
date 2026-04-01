@@ -7,19 +7,7 @@ license: MIT
 metadata:
   author: gentleman-programming
   version: '3.0'
-  scope:
-    [
-      root,
-      admin,
-      customer,
-      api-gateway,
-      auth-service,
-      club-service,
-      inventory-service,
-      booking-service,
-      finance-service,
-      libs,
-    ]
+  scope: [root, admin, customer, api-gateway, auth-service, club-service, inventory-service, booking-service, finance-service, libs]
   auto_invoke: 'Writing TypeScript types/interfaces'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---

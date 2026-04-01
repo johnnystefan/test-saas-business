@@ -7,19 +7,7 @@ license: Apache-2.0
 metadata:
   author: saas-business-platform
   version: '2.0'
-  scope:
-    [
-      root,
-      admin,
-      customer,
-      api-gateway,
-      auth-service,
-      club-service,
-      inventory-service,
-      booking-service,
-      finance-service,
-      libs,
-    ]
+  scope: [root, admin, customer, api-gateway, auth-service, club-service, inventory-service, booking-service, finance-service, libs]
   auto_invoke: 'Creating Zod schemas or validators'
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
