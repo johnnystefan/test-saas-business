@@ -43,3 +43,8 @@ vite.config.*.timestamp*
 .opencode/package.json
 .opencode/bun.lock
 .opencode/.gitignore
+
+# Personal AI tooling — each developer uses their own
+.agents/
+.codex/
+.atl/
