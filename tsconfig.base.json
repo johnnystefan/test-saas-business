@@ -6,7 +6,7 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
-    "lib": ["es2022"],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "types": [],
     "declaration": true,
     "declarationMap": true,

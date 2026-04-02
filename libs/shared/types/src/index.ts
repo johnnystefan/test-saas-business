@@ -3,5 +3,6 @@ export * from './errors';
 export * from './tenant';
 export * from './user';
 export * from './member';
+export * from './membership';
 export * from './business-unit';
 export * from './common';

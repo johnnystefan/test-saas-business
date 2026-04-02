@@ -9,6 +9,17 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 export default defineConfig(() => ({
   root: import.meta.dirname,
   cacheDir: '../../../node_modules/.vite/libs/shared/ui',
+  test: {
+    environment: 'jsdom',
+    globals: false,
+    setupFiles: ['./src/test-setup.ts'],
+    include: ['src/**/*.spec.ts', 'src/**/*.spec.tsx'],
+    reporters: ['default'],
+    coverage: {
+      reportsDirectory: '../../../coverage/libs/shared/ui',
+      provider: 'v8',
+    },
+  },
   plugins: [
     react(),
     nxViteTsPaths(),

@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+:root {
+  --color-bg: #0b1220;
+  --color-card: #111827;
+  --color-accent: #22c55e;
+  --color-secondary: #d946ef;
+  --color-text: #e5e7eb;
+  --color-muted: #9ca3af;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
