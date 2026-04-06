@@ -118,12 +118,10 @@ export class ClubGrpcController {
   async listMemberships(
     data: GrpcListMembershipsRequest,
   ): Promise<GrpcListMembershipsResponse> {
-    // NOTE: proto ListMembershipsRequest.member_id is mapped to businessUnitId
-    // in the use case. See mapping-notes section in implementation summary.
-    const memberships = await this.listMembershipsProvider.execute(
-      data.member_id,
-      data.tenant_id,
-    );
+    const memberships = await this.listMembershipsProvider.execute({
+      email: data.email,
+      tenantId: data.tenant_id,
+    });
     return { items: memberships.map(mapMembershipWithMember) };
   }
 

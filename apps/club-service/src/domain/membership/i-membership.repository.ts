@@ -10,9 +10,14 @@ export interface IMembershipRepository {
   findByMemberAndUnit(
     memberId: string,
     businessUnitId: string,
+    tenantId: string,
   ): Promise<Membership | null>;
   findAllByBusinessUnit(
     businessUnitId: string,
+    tenantId: string,
+  ): Promise<MembershipWithMember[]>;
+  findAllByMember(
+    memberId: string,
     tenantId: string,
   ): Promise<MembershipWithMember[]>;
   updateStatus(

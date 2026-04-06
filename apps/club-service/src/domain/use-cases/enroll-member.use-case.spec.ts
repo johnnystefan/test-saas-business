@@ -36,6 +36,7 @@ describe('EnrollMemberUseCase', () => {
       create: jest.fn().mockResolvedValue(MembershipMother.active()),
       findByMemberAndUnit: jest.fn().mockResolvedValue(null),
       findAllByBusinessUnit: jest.fn().mockResolvedValue([]),
+      findAllByMember: jest.fn().mockResolvedValue([]),
       updateStatus: jest.fn().mockResolvedValue(MembershipMother.active()),
     } as jest.Mocked<IMembershipRepository>;
 
@@ -77,6 +78,7 @@ describe('EnrollMemberUseCase', () => {
     expect(mockMembershipRepository.findByMemberAndUnit).toHaveBeenCalledWith(
       'member-1',
       'unit-1',
+      'tenant-1',
     );
     expect(mockMembershipRepository.create).toHaveBeenCalledWith(inputData);
   });

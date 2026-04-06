@@ -27,7 +27,11 @@ export class EnrollMemberUseCase {
       input.businessUnitId,
       input.tenantId,
     );
-    await this.ensureNotAlreadyEnrolled(input.memberId, input.businessUnitId);
+    await this.ensureNotAlreadyEnrolled(
+      input.memberId,
+      input.businessUnitId,
+      input.tenantId,
+    );
     return this.createdMembership(input);
   }
 
@@ -58,10 +62,12 @@ export class EnrollMemberUseCase {
   private async ensureNotAlreadyEnrolled(
     memberId: string,
     businessUnitId: string,
+    tenantId: string,
   ): Promise<void> {
     const existing = await this.membershipRepository.findByMemberAndUnit(
       memberId,
       businessUnitId,
+      tenantId,
     );
     if (existing)
       throw new ResourceAlreadyExistsError({

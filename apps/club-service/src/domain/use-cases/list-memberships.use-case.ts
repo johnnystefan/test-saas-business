@@ -1,13 +1,27 @@
+import type { IMemberRepository } from '../member/i-member.repository';
 import type { IMembershipRepository } from '../membership/i-membership.repository';
 import type { MembershipWithMember } from '../membership/membership.entity';
 
-export class ListMembershipsUseCase {
-  constructor(private readonly repository: IMembershipRepository) {}
+export type ListMembershipsInput = {
+  readonly email: string;
+  readonly tenantId: string;
+};
 
-  async execute(
-    businessUnitId: string,
-    tenantId: string,
-  ): Promise<MembershipWithMember[]> {
-    return this.repository.findAllByBusinessUnit(businessUnitId, tenantId);
+export class ListMembershipsUseCase {
+  constructor(
+    private readonly memberRepository: IMemberRepository,
+    private readonly membershipRepository: IMembershipRepository,
+  ) {}
+
+  async execute(input: ListMembershipsInput): Promise<MembershipWithMember[]> {
+    const member = await this.memberRepository.findByEmail(
+      input.email,
+      input.tenantId,
+    );
+    if (!member) {
+      return [];
+    }
+    const { id: memberId } = member.toPrimitives();
+    return this.membershipRepository.findAllByMember(memberId, input.tenantId);
   }
 }

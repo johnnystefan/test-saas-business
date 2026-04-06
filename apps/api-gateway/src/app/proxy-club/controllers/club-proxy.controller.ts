@@ -140,6 +140,7 @@ export class ClubProxyController {
     return this.clubGrpcService.listMemberships({
       tenant_id: req.user.tenantId,
       member_id: req.user.sub,
+      email: req.user.email,
     });
   }
 

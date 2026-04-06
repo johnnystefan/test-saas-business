@@ -37,9 +37,10 @@ export class PrismaMembershipRepository implements IMembershipRepository {
   async findByMemberAndUnit(
     memberId: string,
     businessUnitId: string,
+    tenantId: string,
   ): Promise<Membership | null> {
     const record = await this.prisma.membership.findFirst({
-      where: { memberId, businessUnitId },
+      where: { memberId, businessUnitId, tenantId },
     });
     return record ? this.toDomain(record) : null;
   }
@@ -50,6 +51,18 @@ export class PrismaMembershipRepository implements IMembershipRepository {
   ): Promise<MembershipWithMember[]> {
     const records = await this.prisma.membership.findMany({
       where: { businessUnitId, tenantId },
+      include: { member: { select: { name: true, email: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+    return records.map((r) => this.toDomainWithMember(r));
+  }
+
+  async findAllByMember(
+    memberId: string,
+    tenantId: string,
+  ): Promise<MembershipWithMember[]> {
+    const records = await this.prisma.membership.findMany({
+      where: { memberId, tenantId },
       include: { member: { select: { name: true, email: true } } },
       orderBy: { createdAt: 'desc' },
     });

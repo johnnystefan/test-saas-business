@@ -79,6 +79,7 @@ message MemberResponse {
 message ListMembershipsRequest {
   string tenant_id = 1;
   string member_id = 2;
+  string email = 3;
 }
 
 message ListMembershipsResponse {

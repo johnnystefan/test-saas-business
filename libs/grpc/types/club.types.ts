@@ -67,6 +67,7 @@ export interface GrpcMemberResponse {
 export interface GrpcListMembershipsRequest {
   readonly tenant_id: string;
   readonly member_id: string;
+  readonly email: string;
 }
 
 export interface GrpcListMembershipsResponse {
