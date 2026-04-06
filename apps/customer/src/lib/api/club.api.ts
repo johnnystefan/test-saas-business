@@ -25,9 +25,10 @@ const RawMembershipSchema = z.object({
     ],
   ),
   start_date: z.string(),
-  end_date: z.string().nullable(),
-  created_at: z.string(),
-  updated_at: z.string(),
+  end_date: z.string().optional(),
+  // created_at / updated_at are NOT included in gRPC MembershipResponse — optional for safety
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
 });
 
 const RawBusinessUnitSchema = z.object({
@@ -60,9 +61,9 @@ function mapRawMembership(
     businessUnitId: raw.business_unit_id,
     status: raw.status,
     startDate: raw.start_date,
-    endDate: raw.end_date,
-    createdAt: raw.created_at,
-    updatedAt: raw.updated_at,
+    endDate: raw.end_date ?? null,
+    createdAt: raw.created_at ?? '',
+    updatedAt: raw.updated_at ?? '',
   };
 }
 
