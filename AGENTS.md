@@ -149,11 +149,13 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 |--------|-------|
 | After creating/modifying a skill | `skill-sync` |
 | BFF API Gateway aggregating multiple microservice calls behind a single endpoint | `pattern-facade` |
+| Building type-safe API clients or form validation systems | `typescript-advanced` |
 | BusinessUnit.create(), Member.create(), or Membership.create() static factory | `pattern-factory-method` |
 | CQRS command bus or event bus implementation | `pattern-mediator` |
 | CachedRepository wrapping PrismaRepository, or LoggedUseCase wrapping a use case | `pattern-decorator` |
 | Creating Zod schemas or validators | `zod-4` |
 | Creating new skills | `skill-creator` |
+| Creating type-safe utilities, mapped types, or template literal types | `typescript-advanced` |
 | Designing class relationships or reviewing object lifecycle ownership | `fundamentals/object-relationships` |
 | Designing extensible architecture or evaluating inheritance vs composition | `fundamentals/oop-design-principles` |
 | Documenting architecture or class relationships with UML | `documentation/uml-documentation` |
@@ -162,6 +164,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Extending third-party or read-only library classes | `imcomplete-library-class` |
 | Fixing bug | `tdd` |
 | Identifying or communicating technical debt and refactoring cost | `technical-debt-management` |
+| Implementing complex TypeScript generics or conditional types | `typescript-advanced` |
 | Implementing feature | `tdd` |
 | Modifying component | `tdd` |
 | Monitoring CI pipeline or self-healing fixes | `monitor-ci` |

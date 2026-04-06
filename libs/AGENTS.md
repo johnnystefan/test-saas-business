@@ -15,8 +15,11 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
 | Action | Skill |
 |--------|-------|
+| Building type-safe API clients or form validation systems | `typescript-advanced` |
 | Creating Zod schemas or validators | `zod-4` |
+| Creating type-safe utilities, mapped types, or template literal types | `typescript-advanced` |
 | Fixing bug | `tdd` |
+| Implementing complex TypeScript generics or conditional types | `typescript-advanced` |
 | Implementing feature | `tdd` |
 | Modifying component | `tdd` |
 | Refactoring code | `tdd` |
